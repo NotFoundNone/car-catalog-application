@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
                     .forEach(System.out::println);
         } else {
             try {
-                this.userRepository.saveAndFlush(this.modelMapper.map(userDTO, Offer.class));
+                this.userRepository.saveAndFlush(this.modelMapper.map(userDTO, User.class));
             }
             catch (Exception e) {
                 System.out.println("Oops, something went wrong! :(");
