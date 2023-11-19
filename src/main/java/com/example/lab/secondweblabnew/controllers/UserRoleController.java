@@ -1,10 +1,7 @@
 package com.example.lab.secondweblabnew.controllers;
 
-import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.models.UserRole;
 import com.example.lab.secondweblabnew.services.UserRoleService;
-import com.example.lab.secondweblabnew.services.UserService;
-import com.example.lab.secondweblabnew.services.dtos.UserDTO;
 import com.example.lab.secondweblabnew.services.dtos.UserRoleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/userRoles")
 public class UserRoleController {
 
     private UserRoleService userRoleService;

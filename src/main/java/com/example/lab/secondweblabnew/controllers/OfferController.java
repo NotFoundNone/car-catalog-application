@@ -1,10 +1,7 @@
 package com.example.lab.secondweblabnew.controllers;
 
 import com.example.lab.secondweblabnew.models.Offer;
-import com.example.lab.secondweblabnew.services.BrandService;
-import com.example.lab.secondweblabnew.services.ModelService;
 import com.example.lab.secondweblabnew.services.OfferService;
-import com.example.lab.secondweblabnew.services.dtos.ModelDTO;
 import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/offers")
 public class OfferController {
 
     private OfferService offerService;

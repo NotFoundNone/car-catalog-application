@@ -1,6 +1,5 @@
 package com.example.lab.secondweblabnew.controllers;
 
-import com.example.lab.secondweblabnew.services.BrandService;
 import com.example.lab.secondweblabnew.services.ModelService;
 import com.example.lab.secondweblabnew.services.dtos.ModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/models")
 public class ModelController {
 
     private ModelService modelService;

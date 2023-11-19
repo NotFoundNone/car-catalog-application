@@ -1,9 +1,7 @@
 package com.example.lab.secondweblabnew.controllers;
 
-import com.example.lab.secondweblabnew.models.Offer;
 import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.services.UserService;
-import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
 import com.example.lab.secondweblabnew.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
     private UserService userService;
