@@ -90,7 +90,7 @@ public class User extends BaseCreatedEntity{
         this.role = role;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sellet", cascade = jakarta.persistence.CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "seller", cascade = jakarta.persistence.CascadeType.REMOVE)
     public Set<Offer> getOffers() {
         return offers;
     }
