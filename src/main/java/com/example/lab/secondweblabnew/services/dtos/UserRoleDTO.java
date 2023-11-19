@@ -1,11 +1,17 @@
 package com.example.lab.secondweblabnew.services.dtos;
 
+import com.example.lab.secondweblabnew.enums.Role;
+
 public class UserRoleDTO {
     private String uuid;
 
-    private String name;
+    private Role role;
 
     public UserRoleDTO() {
+    }
+
+    public UserRoleDTO(Role role) {
+        this.role = role;
     }
 
     public String getUuid() {
@@ -16,12 +22,12 @@ public class UserRoleDTO {
         this.uuid = uuid;
     }
 
-    public String getName() {
-        return name;
+    public Role getName() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(Role role) {
+        this.role = role;
     }
 
 }

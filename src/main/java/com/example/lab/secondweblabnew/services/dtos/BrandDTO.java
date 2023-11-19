@@ -12,6 +12,10 @@ public class BrandDTO {
     public BrandDTO() {
     }
 
+    public BrandDTO(String name) {
+        this.name = name;
+    }
+
     public String getUuid() {
         return uuid;
     }

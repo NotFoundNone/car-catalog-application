@@ -19,11 +19,19 @@ public class UserDTO {
 
     private String imageURL;
 
-    private UserRole role;
-
-    private Set<Offer> offers;
+    private UserRoleDTO role;
 
     public UserDTO() {
+    }
+
+    public UserDTO(String username, String password, String firstName, String lastName, boolean isActive, String imageURL, UserRoleDTO role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.imageURL = imageURL;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -74,19 +82,11 @@ public class UserDTO {
         this.imageURL = imageURL;
     }
 
-    public UserRole getRole() {
+    public UserRoleDTO getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(UserRoleDTO role) {
         this.role = role;
-    }
-
-    public Set<Offer> getOffers() {
-        return offers;
-    }
-
-    public void setOffers(Set<Offer> offers) {
-        this.offers = offers;
     }
 }

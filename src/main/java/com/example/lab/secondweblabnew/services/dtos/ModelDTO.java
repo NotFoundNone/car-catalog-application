@@ -1,6 +1,7 @@
 package com.example.lab.secondweblabnew.services.dtos;
 
 import com.example.lab.secondweblabnew.enums.Category;
+import com.example.lab.secondweblabnew.models.Brand;
 
 public class ModelDTO {
 
@@ -16,7 +17,18 @@ public class ModelDTO {
 
     private int endYear;
 
+    private BrandDTO brand;
+
     public ModelDTO(){
+    }
+
+    public ModelDTO(String name, Category category, String imageURL, int startYear, int endYear, BrandDTO brand) {
+        this.name = name;
+        this.category = category;
+        this.imageURL = imageURL;
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.brand = brand;
     }
 
     public String getUuid() {
@@ -65,5 +77,13 @@ public class ModelDTO {
 
     public void setEndYear(int endYear) {
         this.endYear = endYear;
+    }
+
+    public BrandDTO getBrand() {
+        return brand;
+    }
+
+    public void setBrand(BrandDTO brand) {
+        this.brand = brand;
     }
 }

@@ -23,11 +23,23 @@ public class OfferDTO {
 
     private int year;
 
-    private Model model;
+    private ModelDTO model;
 
-    private User seller;
+    private UserDTO seller;
 
     public OfferDTO() {
+    }
+
+    public OfferDTO(String discription, Engine engine, String imageURL, int mileage, int price, Transmission transmission, int year, ModelDTO model, UserDTO seller) {
+        this.discription = discription;
+        this.engine = engine;
+        this.imageURL = imageURL;
+        this.mileage = mileage;
+        this.price = price;
+        this.transmission = transmission;
+        this.year = year;
+        this.model = model;
+        this.seller = seller;
     }
 
     public String getUuid() {
@@ -94,19 +106,19 @@ public class OfferDTO {
         this.year = year;
     }
 
-    public Model getModel() {
+    public ModelDTO getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(ModelDTO model) {
         this.model = model;
     }
 
-    public User getSeller() {
+    public UserDTO getSeller() {
         return seller;
     }
 
-    public void setSeller(User seller) {
+    public void setSeller(UserDTO seller) {
         this.seller = seller;
     }
 }
