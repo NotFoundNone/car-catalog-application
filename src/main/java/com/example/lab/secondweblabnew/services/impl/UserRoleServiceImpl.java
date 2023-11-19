@@ -76,7 +76,7 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public void deleteByUuid(String uuid) {
-        userRoleRepository.saveAndFlush(uuid);
+        userRoleRepository.deleteById(uuid);
     }
 
     @Override
