@@ -33,6 +33,12 @@ public class ModelController {
         return "modelPage";
     }
 
+    @GetMapping("/add")
+    String addBrand()
+    {
+        return "model-add";
+    }
+
     @PostMapping("/add")
     String addModel(@ModelAttribute ModelDTO model){
         modelService.add(model);

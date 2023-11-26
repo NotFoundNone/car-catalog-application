@@ -35,6 +35,12 @@ public class BrandController {
         return "brandPage";
     }
 
+    @GetMapping("/add")
+    String addBrand()
+    {
+        return "brand-add";
+    }
+
     @PostMapping("/add")
     String addBrand(@ModelAttribute BrandDTO brand){
         brandService.add(brand);

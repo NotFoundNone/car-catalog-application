@@ -2,6 +2,7 @@ package com.example.lab.secondweblabnew.controllers;
 
 import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.services.UserService;
+import com.example.lab.secondweblabnew.services.dtos.AddUserDto;
 import com.example.lab.secondweblabnew.services.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,11 @@ public class UserController {
     @Autowired
     public void setUserService(UserService userService) { this.userService = userService; }
 
+    @ModelAttribute("userModel")
+    public AddUserDto initUser() {
+        return new AddUserDto();
+    }
+
     @GetMapping
     String getAll(Model model){
         List<User> users = userService.getAll();
@@ -32,6 +38,12 @@ public class UserController {
         Optional<User> user = userService.findByUuid(uuid);
         model.addAttribute("user", user.get());
         return "userPage";
+    }
+
+    @GetMapping("/add")
+    String addBrand()
+    {
+        return "user-add";
     }
 
     @PostMapping("/add")

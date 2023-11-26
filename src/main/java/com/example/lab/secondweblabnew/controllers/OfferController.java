@@ -34,6 +34,12 @@ public class OfferController {
         return "offerPage";
     }
 
+    @GetMapping("/add")
+    String addBrand()
+    {
+        return "offer-add";
+    }
+
     @PostMapping("/add")
     String addOffer(@ModelAttribute OfferDTO offer){
         offerService.add(offer);
