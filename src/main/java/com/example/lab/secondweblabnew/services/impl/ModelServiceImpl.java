@@ -2,6 +2,7 @@ package com.example.lab.secondweblabnew.services.impl;
 
 import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Model;
+import com.example.lab.secondweblabnew.repositories.BrandRepository;
 import com.example.lab.secondweblabnew.repositories.ModelRepository;
 import com.example.lab.secondweblabnew.services.ModelService;
 import com.example.lab.secondweblabnew.services.dtos.AddModelDto;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Service
 public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
+    private BrandRepository brandRepository;
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
@@ -31,6 +33,9 @@ public class ModelServiceImpl implements ModelService {
     @Autowired
     public void setModelRepository (ModelRepository modelRepository){ this.modelRepository = modelRepository; }
 
+    @Autowired
+    public void setBrandRepository (BrandRepository brandRepository){ this.brandRepository = brandRepository; }
+
     @Override
     public void add(AddModelDto modelDTO) {
         if (!this.validationUtil.isValid(modelDTO))
@@ -42,8 +47,11 @@ public class ModelServiceImpl implements ModelService {
                     .forEach(System.out::println);
         } else {
             try {
-                this.modelRepository
-                        .saveAndFlush(this.modelMapper.map(modelDTO, Model.class));
+//                this.modelRepository
+//                        .saveAndFlush(this.modelMapper.map(modelDTO, Model.class));
+                Model model = modelMapper.map(modelDTO, Model.class);
+                model.setBrand(brandRepository.findByName(modelDTO.getBrandName()).orElse(null));
+                this.modelRepository.saveAndFlush(model);
             } catch (Exception e) {
                 System.out.println("Oops, something went wrong! :(");
             }

@@ -93,13 +93,13 @@
                     <div class="mb-3">
                         <label class="form-label" for="brand">Brand</label>
                         <select multiple="false" class="form-control text-center"
-                                id="brand" name="name" th:field="*{name}">
+                                id="brand" name="name" th:field="*{brandName}">
                             <option th:each="c : ${brands}"
                                     th:value="${c.name}"
                                     th:text="${c.name}">Brand name
                             </option>
                         </select>
-                        <small th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"
+                        <small th:if="${#fields.hasErrors('brandName')}" th:errors="*{brandName}"
                                class="text-danger">Error
                             message</small>
                     </div>

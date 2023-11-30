@@ -13,7 +13,7 @@ public class AddModelDto {
 
     private int endYear;
 
-    private BrandDTO brand;
+    private String brandName;
 
     @NotNull(message = "Name of model cannot be null or empty!")
     @Size(min = 1, message = "Model name should be at least 1 characters long!")
@@ -55,11 +55,11 @@ public class AddModelDto {
     }
 
     @NotNull(message = "Please choose a brand!")
-    public BrandDTO getBrand() {
-        return brand;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setBrand(BrandDTO brand) {
-        this.brand = brand;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 }
