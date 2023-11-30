@@ -1,11 +1,17 @@
 package com.example.lab.secondweblabnew.controllers;
 
+import com.example.lab.secondweblabnew.services.BrandService;
 import com.example.lab.secondweblabnew.services.ModelService;
+import com.example.lab.secondweblabnew.services.dtos.AddBrandDto;
+import com.example.lab.secondweblabnew.services.dtos.AddModelDto;
 import com.example.lab.secondweblabnew.services.dtos.ModelDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,15 +21,24 @@ import java.util.Optional;
 public class ModelController {
 
     private ModelService modelService;
+    private BrandService brandService;
 
     @Autowired
-    public void setBrandService(ModelService modelService) { this.modelService = modelService; }
+    public void setModelService(ModelService modelService) { this.modelService = modelService; }
 
-    @GetMapping
+    @Autowired
+    public void setBrandService(BrandService brandService) { this.brandService = brandService; }
+
+    @ModelAttribute("modelModel")
+    public AddModelDto initModel() {
+        return new AddModelDto();
+    }
+
+    @GetMapping("/all")
     String getAll(Model model){
-        List<com.example.lab.secondweblabnew.models.Model> listModels = modelService.getAll();
-        model.addAttribute("models", listModels);
-        return "modelsPage";
+        List<com.example.lab.secondweblabnew.models.Model> models = modelService.getAll();
+        model.addAttribute("modelModels", models);
+        return "models-all";
     }
 
     @GetMapping("/{uuid}")
@@ -34,15 +49,22 @@ public class ModelController {
     }
 
     @GetMapping("/add")
-    String addBrand()
+    String addBrand(Model model)
     {
+        model.addAttribute("brands", brandService.getAll());
         return "model-add";
     }
 
     @PostMapping("/add")
-    String addModel(@ModelAttribute ModelDTO model){
+    String addModel(@Valid AddModelDto model, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("modelModel", model);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.modelModel",
+                    bindingResult);
+            return "redirect:/models/add";
+        }
         modelService.add(model);
-        return "redirect:/modelsPage";
+        return "redirect:/";
     }
 
     @PutMapping("/edit/{uuid}")

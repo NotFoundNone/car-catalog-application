@@ -4,10 +4,13 @@ import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.services.UserService;
 import com.example.lab.secondweblabnew.services.dtos.AddUserDto;
 import com.example.lab.secondweblabnew.services.dtos.UserDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +29,11 @@ public class UserController {
         return new AddUserDto();
     }
 
-    @GetMapping
+    @GetMapping("/all")
     String getAll(Model model){
         List<User> users = userService.getAll();
-        model.addAttribute("offers", users);
-        return "usersPage";
+        model.addAttribute("userModels", users);
+        return "users-all";
     }
 
     @GetMapping("/{uuid}")
@@ -41,15 +44,21 @@ public class UserController {
     }
 
     @GetMapping("/add")
-    String addBrand()
+    String addUser()
     {
         return "user-add";
     }
 
     @PostMapping("/add")
-    String addUser(@ModelAttribute UserDTO user){
+    String addUser(@Valid AddUserDto user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userModel", user);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel",
+                    bindingResult);
+            return "redirect:/users/add";
+        }
         userService.add(user);
-        return "redirect:/usersPage";
+        return "redirect:/users/all";
     }
 
     @PutMapping("/edit/{uuid}")
