@@ -4,6 +4,7 @@ import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Model;
 import com.example.lab.secondweblabnew.repositories.ModelRepository;
 import com.example.lab.secondweblabnew.services.ModelService;
+import com.example.lab.secondweblabnew.services.dtos.AddModelDto;
 import com.example.lab.secondweblabnew.services.dtos.ModelDTO;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +32,7 @@ public class ModelServiceImpl implements ModelService {
     public void setModelRepository (ModelRepository modelRepository){ this.modelRepository = modelRepository; }
 
     @Override
-    public void add(ModelDTO modelDTO) {
+    public void add(AddModelDto modelDTO) {
         if (!this.validationUtil.isValid(modelDTO))
         {
             this.validationUtil

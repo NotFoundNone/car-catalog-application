@@ -3,6 +3,7 @@ package com.example.lab.secondweblabnew.services.impl;
 import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.repositories.BrandRepository;
 import com.example.lab.secondweblabnew.services.BrandService;
+import com.example.lab.secondweblabnew.services.dtos.AddBrandDto;
 import com.example.lab.secondweblabnew.services.dtos.BrandDTO;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +32,7 @@ public class BrandServiceImpl implements BrandService {
     public void setBrandRepository(BrandRepository brandRepository){ this.brandRepository = brandRepository; }
 
     @Override
-    public void add(BrandDTO brandDTO)
+    public void add(AddBrandDto brandDTO)
     {
         if (!this.validationUtil.isValid(brandDTO))
         {

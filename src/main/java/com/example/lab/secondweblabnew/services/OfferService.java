@@ -1,6 +1,7 @@
 package com.example.lab.secondweblabnew.services;
 
 import com.example.lab.secondweblabnew.models.Offer;
+import com.example.lab.secondweblabnew.services.dtos.AddOfferDto;
 import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface OfferService {
 
-    void add(OfferDTO offerDTO);
+    void add(AddOfferDto offerDTO);
 
     void update(String uuid, OfferDTO newOfferDTO);
 

@@ -4,6 +4,7 @@ import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Offer;
 import com.example.lab.secondweblabnew.repositories.OfferRepository;
 import com.example.lab.secondweblabnew.services.OfferService;
+import com.example.lab.secondweblabnew.services.dtos.AddOfferDto;
 import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +32,7 @@ public class OfferServiceImpl implements OfferService {
     public void setOfferRepository (OfferRepository offerRepository) { this.offerRepository = offerRepository;}
 
     @Override
-    public void add(OfferDTO offerDTO) {
+    public void add(AddOfferDto offerDTO) {
         if (!validationUtil.isValid(offerDTO))
         {
             this.validationUtil

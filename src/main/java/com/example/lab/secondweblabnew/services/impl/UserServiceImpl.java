@@ -5,6 +5,7 @@ import com.example.lab.secondweblabnew.models.Offer;
 import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.repositories.UserRepository;
 import com.example.lab.secondweblabnew.services.UserService;
+import com.example.lab.secondweblabnew.services.dtos.AddUserDto;
 import com.example.lab.secondweblabnew.services.dtos.UserDTO;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public void setUserRepository (UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Override
-    public void add(UserDTO userDTO) {
+    public void add(AddUserDto userDTO) {
         if (!validationUtil.isValid(userDTO))
         {
             this.validationUtil
