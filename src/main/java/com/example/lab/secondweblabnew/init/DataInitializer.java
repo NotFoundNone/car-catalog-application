@@ -45,9 +45,9 @@ public class DataInitializer implements CommandLineRunner {
         OfferDTO secondOfferDTO = new OfferDTO("second discription", Engine.GASOLINE, "https://someimage.ru/secondOfferImage.jpg", 18764, 3100000, Transmission.MANUAL, 2017,secondModelDTO, secondUserDTO);
         OfferDTO thirdOfferDTO = new OfferDTO("third discription", Engine.GASOLINE, "https://someimage.ru/thirdOfferImage.jpg", 23567, 7100000, Transmission.MANUAL, 2020,thirdModelDTO, firstUserDTO);
 
-        offerService.add(firstOfferDTO);
-        offerService.add(secondOfferDTO);
-        offerService.add(thirdOfferDTO);
+//        offerService.add(firstOfferDTO);
+//        offerService.add(secondOfferDTO);
+//        offerService.add(thirdOfferDTO);;
 
 
 //        offerService.findByPriceLessThan(10000000).forEach(System.out::println);

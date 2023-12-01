@@ -18,9 +18,11 @@ public abstract class BaseCreatedEntity extends BaseEntity {
     public LocalDate getCreated() {
         return created;
     }
+
     public void setCreated(LocalDate created) {
         this.created = created;
     }
+
     @Column(name = "modified", columnDefinition = "DATE")
     public LocalDate getModified() {
         return modified;

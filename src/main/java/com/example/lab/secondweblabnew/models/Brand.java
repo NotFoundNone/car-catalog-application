@@ -31,5 +31,6 @@ public class Brand extends BaseCreatedEntity{
     }
 
     protected Brand(){
+
     }
 }
