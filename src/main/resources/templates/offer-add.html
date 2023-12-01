@@ -128,27 +128,27 @@
                     <div class="mb-3">
                         <label class="form-label" for="model">Model</label>
                         <select multiple="false" class="form-control text-center"
-                                id="model" name="model" th:field="*{model}">
+                                id="model" name="model" th:field="*{modelName}">
                             <option th:each="c : ${models}"
                                     th:value="${c.name}"
                                     th:text="${c.name}">Model name
                             </option>
                         </select>
-                        <small th:if="${#fields.hasErrors('model')}" th:errors="*{model}"
+                        <small th:if="${#fields.hasErrors('modelName')}" th:errors="*{modelName}"
                                class="text-danger">Error
                             message</small>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="model">Seller</label>
+                        <label class="form-label" for="seller">Seller</label>
                         <select multiple="false" class="form-control text-center"
-                                id="seller" name="name" th:field="*{model}">
+                                id="seller" name="name" th:field="*{sellerUsername}">
                             <option th:each="c : ${sellers}"
-                                    th:value="${c.firstName} + ' ' + ${c.lastName}"
-                                    th:text="${c.firstName}">Seller name
+                                    th:value="${c.username}"
+                                    th:text="${c.username}">Seller name
                             </option>
                         </select>
-                        <small th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"
+                        <small th:if="${#fields.hasErrors('sellerUsername')}" th:errors="*{sellerUsername}"
                                class="text-danger">Error
                             message</small>
                     </div>

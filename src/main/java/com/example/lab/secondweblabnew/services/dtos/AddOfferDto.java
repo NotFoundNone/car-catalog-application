@@ -3,7 +3,6 @@ package com.example.lab.secondweblabnew.services.dtos;
 import com.example.lab.secondweblabnew.enums.Engine;
 import com.example.lab.secondweblabnew.enums.Transmission;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -21,9 +20,9 @@ public class AddOfferDto {
 
     private int year;
 
-    private ModelDTO model;
+    private String modelName;
 
-    private UserDTO seller;
+    private String sellerUsername;
 
     @NotNull(message = "Discription of model cannot be null or empty!")
     @Size(min = 10, message = "Discription should be at least 1 characters long!")
@@ -84,20 +83,20 @@ public class AddOfferDto {
     }
 
     @NotNull(message = "Please choose a model!")
-    public ModelDTO getModel() {
-        return model;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setModel(ModelDTO model) {
-        this.model = model;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 
     @NotNull(message = "Please choose a seller!")
-    public UserDTO getSeller() {
-        return seller;
+    public String getSellerUsername() {
+        return sellerUsername;
     }
 
-    public void setSeller(UserDTO seller) {
-        this.seller = seller;
+    public void setSellerUsername(String sellerUsername) {
+        this.sellerUsername = sellerUsername;
     }
 }

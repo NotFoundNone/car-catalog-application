@@ -35,8 +35,6 @@ public class OfferController {
     @Autowired
     public void setUserService(UserService userService) { this.userService = userService; }
 
-
-
     @ModelAttribute("offerModel")
     public AddOfferDto initOffer() {
         return new AddOfferDto();

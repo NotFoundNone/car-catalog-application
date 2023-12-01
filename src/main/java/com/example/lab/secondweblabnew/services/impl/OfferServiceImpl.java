@@ -1,8 +1,9 @@
 package com.example.lab.secondweblabnew.services.impl;
 
-import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Offer;
+import com.example.lab.secondweblabnew.repositories.ModelRepository;
 import com.example.lab.secondweblabnew.repositories.OfferRepository;
+import com.example.lab.secondweblabnew.repositories.UserRepository;
 import com.example.lab.secondweblabnew.services.OfferService;
 import com.example.lab.secondweblabnew.services.dtos.AddOfferDto;
 import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
@@ -19,6 +20,8 @@ import java.util.Optional;
 @Service
 public class OfferServiceImpl implements OfferService {
     private OfferRepository offerRepository;
+    private ModelRepository modelRepository;
+    private UserRepository userRepository;
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
@@ -31,6 +34,12 @@ public class OfferServiceImpl implements OfferService {
     @Autowired
     public void setOfferRepository (OfferRepository offerRepository) { this.offerRepository = offerRepository;}
 
+    @Autowired
+    public void setModelRepository (ModelRepository modelRepository) { this.modelRepository = modelRepository;}
+
+    @Autowired
+    public void setUserRepository (UserRepository userRepository) { this.userRepository = userRepository;}
+
     @Override
     public void add(AddOfferDto offerDTO) {
         if (!validationUtil.isValid(offerDTO))
@@ -42,7 +51,11 @@ public class OfferServiceImpl implements OfferService {
                     .forEach(System.out::println);
         } else {
             try {
-                this.offerRepository.saveAndFlush(this.modelMapper.map(offerDTO, Offer.class));
+//                this.offerRepository.saveAndFlush(this.modelMapper.map(offerDTO, Offer.class));
+                Offer offer = modelMapper.map(offerDTO, Offer.class);
+                offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
+                offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
+                this.offerRepository.saveAndFlush(offer);
             }
             catch (Exception e) {
                 System.out.println("Oops, something went wrong! :(");
