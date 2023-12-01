@@ -1,8 +1,10 @@
 package com.example.lab.secondweblabnew.services.impl;
 
+import com.example.lab.secondweblabnew.enums.Role;
 import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Offer;
 import com.example.lab.secondweblabnew.models.User;
+import com.example.lab.secondweblabnew.models.UserRole;
 import com.example.lab.secondweblabnew.repositories.UserRepository;
 import com.example.lab.secondweblabnew.services.UserService;
 import com.example.lab.secondweblabnew.services.dtos.AddUserDto;
@@ -43,6 +45,9 @@ public class UserServiceImpl implements UserService {
                     .forEach(System.out::println);
         } else {
             try {
+                UserRole user = new UserRole();
+                user.setRole(Role.USER);
+                userDTO.setRole(user);
                 this.userRepository.saveAndFlush(this.modelMapper.map(userDTO, User.class));
             }
             catch (Exception e) {

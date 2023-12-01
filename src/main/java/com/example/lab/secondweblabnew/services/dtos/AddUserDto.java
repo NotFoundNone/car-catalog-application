@@ -1,14 +1,21 @@
 package com.example.lab.secondweblabnew.services.dtos;
 
+import com.example.lab.secondweblabnew.models.UserRole;
+import com.example.lab.secondweblabnew.util.UniqueUsername;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class AddUserDto {
 
     private String firstName;
+
     private String lastName;
+    @UniqueUsername
     private String username;
+
     private String password;
+
+    private UserRole role;
 
     @NotNull(message = "First name cannot be null or empty!")
     @Size(min = 2, message = "First name should be at least 2 characters long!")
@@ -47,5 +54,13 @@ public class AddUserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }
