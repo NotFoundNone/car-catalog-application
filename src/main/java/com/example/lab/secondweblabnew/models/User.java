@@ -80,7 +80,7 @@ public class User extends BaseCreatedEntity{
     }
 
     @ManyToOne(optional = false)
-    @Cascade(CascadeType.ALL)
+    @Cascade({CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "role_uuid", referencedColumnName = "uuid", nullable = false)
     public UserRole getRole() {
         return role;
@@ -97,6 +97,11 @@ public class User extends BaseCreatedEntity{
 
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
+    }
+
+    @Override
+    public String toString() {
+        return username;
     }
 
 }

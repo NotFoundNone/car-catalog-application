@@ -1,7 +1,6 @@
 package com.example.lab.secondweblabnew.services.dtos;
 
 import com.example.lab.secondweblabnew.enums.Category;
-import com.example.lab.secondweblabnew.models.Brand;
 
 public class ModelDTO {
 

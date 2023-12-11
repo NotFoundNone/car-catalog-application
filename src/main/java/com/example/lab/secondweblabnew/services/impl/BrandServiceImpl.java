@@ -4,9 +4,9 @@ import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.repositories.BrandRepository;
 import com.example.lab.secondweblabnew.services.BrandService;
 import com.example.lab.secondweblabnew.services.dtos.AddBrandDto;
-import com.example.lab.secondweblabnew.services.dtos.BrandDTO;
+import com.example.lab.secondweblabnew.services.dtos.ShowDetailedBrandInfoDto;
+import com.example.lab.secondweblabnew.services.dtos.UpdateBrandDto;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void update(String uuid, BrandDTO newBrandDTO) {
+    public void update(UpdateBrandDto newBrandDTO) {
 
         if (!this.validationUtil.isValid(newBrandDTO))
         {
@@ -63,9 +63,7 @@ public class BrandServiceImpl implements BrandService {
                     .forEach(System.out::println);
         } else {
             try {
-                Optional<Brand> existingBrand = brandRepository.findById(uuid);
-                if (existingBrand == null)
-                    throw new EntityNotFoundException("Бренд не найден");
+                Optional<Brand> existingBrand = brandRepository.findByName(newBrandDTO.getName());
                 Brand brand = existingBrand.get();
                 modelMapper.map(newBrandDTO, brand);
                 brandRepository.saveAndFlush(brand);
@@ -76,11 +74,24 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public ShowDetailedBrandInfoDto brandDetails(String brandName)
+    {
+        return modelMapper.map(brandRepository.findByName(brandName).orElse(null), ShowDetailedBrandInfoDto.class);
+    }
+
+    @Override
     public void deleteByUuid(String uuid) { brandRepository.deleteById(uuid);}
 
     @Override
-    public Optional<Brand> findByUuid(String uuid) { return brandRepository.findById(uuid); }
+    public Optional<UpdateBrandDto> findByUuid(String uuid) {
+        return Optional.ofNullable(modelMapper.map(brandRepository.findByUuid(uuid), UpdateBrandDto.class));
+    }
 
     @Override
     public List<Brand> getAll() { return brandRepository.findAll();}
+
+    @Override
+    public void deleteByName(String brandName) {
+        brandRepository.deleteByName(brandName);
+    }
 }

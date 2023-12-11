@@ -73,8 +73,7 @@ public class Model extends BaseCreatedEntity{
         this.endYear = endYear;
     }
 
-    @ManyToOne(optional = false)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "brand_uuid",referencedColumnName = "uuid", nullable = false)
     public Brand getBrand() {
         return brand;
@@ -91,5 +90,10 @@ public class Model extends BaseCreatedEntity{
 
     public void setOffers(Set<Offer> offer) {
         this.offers = offer;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

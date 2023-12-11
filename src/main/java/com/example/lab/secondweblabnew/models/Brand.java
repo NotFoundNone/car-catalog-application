@@ -2,6 +2,7 @@ package com.example.lab.secondweblabnew.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -32,5 +33,17 @@ public class Brand extends BaseCreatedEntity{
 
     protected Brand(){
 
+    }
+
+    public Brand(LocalDate created,
+                 LocalDate modified,
+                 String name) {
+        super(created, modified);
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

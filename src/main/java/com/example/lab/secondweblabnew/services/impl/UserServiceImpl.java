@@ -1,8 +1,6 @@
 package com.example.lab.secondweblabnew.services.impl;
 
 import com.example.lab.secondweblabnew.enums.Role;
-import com.example.lab.secondweblabnew.models.Brand;
-import com.example.lab.secondweblabnew.models.Offer;
 import com.example.lab.secondweblabnew.models.User;
 import com.example.lab.secondweblabnew.models.UserRole;
 import com.example.lab.secondweblabnew.repositories.UserRepository;

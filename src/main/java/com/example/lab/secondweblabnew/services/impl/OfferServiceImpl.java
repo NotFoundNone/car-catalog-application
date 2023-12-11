@@ -7,6 +7,7 @@ import com.example.lab.secondweblabnew.repositories.UserRepository;
 import com.example.lab.secondweblabnew.services.OfferService;
 import com.example.lab.secondweblabnew.services.dtos.AddOfferDto;
 import com.example.lab.secondweblabnew.services.dtos.OfferDTO;
+import com.example.lab.secondweblabnew.services.dtos.ShowDetailedOfferInfoDto;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -14,8 +15,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -51,7 +54,6 @@ public class OfferServiceImpl implements OfferService {
                     .forEach(System.out::println);
         } else {
             try {
-//                this.offerRepository.saveAndFlush(this.modelMapper.map(offerDTO, Offer.class));
                 Offer offer = modelMapper.map(offerDTO, Offer.class);
                 offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
                 offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
@@ -83,6 +85,30 @@ public class OfferServiceImpl implements OfferService {
                 System.out.println("Oops, something went wrong! :(");
             }
         }
+    }
+
+    @Override
+    public ShowDetailedOfferInfoDto offerDetails(String offerUuid)
+    {
+        return modelMapper.map(offerRepository.findById(offerUuid).orElse(null), ShowDetailedOfferInfoDto.class);
+    }
+
+    @Override
+    public void deleteByFullName(String fullName)
+    {
+        offerRepository.deleteOfferByFullName(fullName);
+    }
+
+    @Override
+    public List<Offer> getTop3MostExpensiveOffers() {
+        List<Offer> allOffers = offerRepository.findAll();
+
+        List<Offer> top3MostExpensiveOffers = allOffers.stream()
+                .sorted(Comparator.comparingInt(Offer::getPrice).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+
+        return top3MostExpensiveOffers;
     }
 
     @Override

@@ -1,15 +1,9 @@
-package com.example.lab.secondweblabnew.models;
+package com.example.lab.secondweblabnew.services.dtos;
 
 import com.example.lab.secondweblabnew.enums.Engine;
 import com.example.lab.secondweblabnew.enums.Transmission;
-import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
-@Entity
-@Table(name = "offers")
-public class Offer extends BaseCreatedEntity{
-
+public class ShowDetailedOfferInfoDto {
     private String discription;
 
     private Engine engine;
@@ -24,14 +18,10 @@ public class Offer extends BaseCreatedEntity{
 
     private int year;
 
-    private Model model;
+    private String modelName;
 
-    private User seller;
+    private String sellerUsername;
 
-    public Offer() {
-    }
-
-    @Column(name = "discription")
     public String getDiscription() {
         return discription;
     }
@@ -40,7 +30,6 @@ public class Offer extends BaseCreatedEntity{
         this.discription = discription;
     }
 
-    @Column(name = "engine")
     public Engine getEngine() {
         return engine;
     }
@@ -49,7 +38,6 @@ public class Offer extends BaseCreatedEntity{
         this.engine = engine;
     }
 
-    @Column(name = "imageURL")
     public String getImageURL() {
         return imageURL;
     }
@@ -58,7 +46,6 @@ public class Offer extends BaseCreatedEntity{
         this.imageURL = imageURL;
     }
 
-    @Column(name = "mileage")
     public int getMileage() {
         return mileage;
     }
@@ -67,7 +54,6 @@ public class Offer extends BaseCreatedEntity{
         this.mileage = mileage;
     }
 
-    @Column(name = "price")
     public int getPrice() {
         return price;
     }
@@ -76,7 +62,6 @@ public class Offer extends BaseCreatedEntity{
         this.price = price;
     }
 
-    @Column(name = "transmission")
     public Transmission getTransmission() {
         return transmission;
     }
@@ -85,7 +70,6 @@ public class Offer extends BaseCreatedEntity{
         this.transmission = transmission;
     }
 
-    @Column(name = "year")
     public int getYear() {
         return year;
     }
@@ -94,23 +78,19 @@ public class Offer extends BaseCreatedEntity{
         this.year = year;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "model_uuid", referencedColumnName = "uuid", nullable = false)
-    public Model getModel() {
-        return model;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid", nullable = false)
-    public User getSeller() {
-        return seller;
+    public String getSellerUsername() {
+        return sellerUsername;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setSellerUsername(String sellerUsername) {
+        this.sellerUsername = sellerUsername;
     }
 }

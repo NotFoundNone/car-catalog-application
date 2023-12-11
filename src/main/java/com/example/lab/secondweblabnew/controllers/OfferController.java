@@ -74,16 +74,30 @@ public class OfferController {
         return "redirect:/";
     }
 
+    @GetMapping("/offer-details/{offer-uuid}")
+    public String offerDetails(@PathVariable("offer-uuid") String offerUuid, org.springframework.ui.Model model) {
+        model.addAttribute("offerDetails", offerService.offerDetails(offerUuid));
+
+        return "offer-details";
+    }
+
+    @GetMapping("/top3mostexpensive")
+    String getTop3MostExpensive(Model model) {
+        List<Offer> top3MostExpensiveOffers = offerService.getTop3MostExpensiveOffers();
+        model.addAttribute("top3Offers", top3MostExpensiveOffers);
+        return "top3offers";
+    }
+
     @PutMapping("/edit/{uuid}")
     String editOffer(@PathVariable String uuid, @ModelAttribute OfferDTO offer){
         offerService.update(uuid, offer);
         return "redirect:/offersPage";
     }
 
-    @DeleteMapping("/{uuid}")
-    String deleteOffer(@PathVariable String uuid)
+    @GetMapping("/offer-delete/{full-offer-name}")
+    String deleteOffer(@PathVariable("full-offer-name") String fullName)
     {
-        offerService.deleteByUuid(uuid);
-        return "redirect:/offersPage";
+        offerService.deleteByFullName(fullName);
+        return "redirect:/offers/all";
     }
 }

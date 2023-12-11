@@ -2,8 +2,6 @@ package com.example.lab.secondweblabnew.services.dtos;
 
 import com.example.lab.secondweblabnew.enums.Engine;
 import com.example.lab.secondweblabnew.enums.Transmission;
-import com.example.lab.secondweblabnew.models.Model;
-import com.example.lab.secondweblabnew.models.User;
 
 public class OfferDTO {
 

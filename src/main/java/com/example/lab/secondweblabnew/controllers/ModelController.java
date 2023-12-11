@@ -49,7 +49,7 @@ public class ModelController {
     }
 
     @GetMapping("/add")
-    String addBrand(Model model)
+    String addModel(Model model)
     {
         model.addAttribute("brands", brandService.getAll());
         return "model-add";
@@ -67,16 +67,23 @@ public class ModelController {
         return "redirect:/";
     }
 
+    @GetMapping("/model-details/{model-name}")
+    public String modelDetails(@PathVariable("model-name") String modelName, org.springframework.ui.Model model) {
+        model.addAttribute("modelDetails", modelService.modelDetails(modelName));
+
+        return "model-details";
+    }
+
     @PutMapping("/edit/{uuid}")
     String editModel(@PathVariable String uuid, @ModelAttribute ModelDTO model){
         modelService.update(uuid, model);
         return "redirect:/modelsPage";
     }
 
-    @DeleteMapping("/{uuid}")
-    String deleteModel(@PathVariable String uuid)
+    @GetMapping("/model-delete/{full-model-name}")
+    String deleteModel(@PathVariable("full-model-name") String fullName)
     {
-        modelService.deleteByUuid(uuid);
-        return "redirect:/modelsPage";
+        modelService.deleteByName(fullName);
+        return "redirect:/models/all";
     }
 }

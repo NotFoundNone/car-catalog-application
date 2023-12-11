@@ -14,10 +14,29 @@
             <div class="jumbotron text-center rounded col-md-8 align-self-center" style="margin-top: 100px;">
                 <div class="justify-content-center">
                     <h1>Car Catalog Application!</h1>
+                    <br/>
                 </div>
-                <div><span th:text="'Last update of Database:'"></span>;
-                    <span th:text="${#dates.createNow()}"></span>
-                </div>
+                <h2>Top 3 Most Expensive Offers</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Seller</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <!-- Add other columns if needed -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="offer : ${top3Offers}">
+                        <td th:text="${offer.model}"></td>
+                        <td th:text="${offer.seller}"></td>
+                        <td th:text="${offer.discription}"></td>
+                        <td th:text="${offer.price}"></td>
+                        <!-- Add other columns if needed -->
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@ package com.example.lab.secondweblabnew.services.dtos;
 import com.example.lab.secondweblabnew.util.UniqueBrandName;
 import jakarta.validation.constraints.NotEmpty;
 
-public class AddBrandDto {
+public class UpdateBrandDto {
 
     @UniqueBrandName
     String name;

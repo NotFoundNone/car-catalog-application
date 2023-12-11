@@ -1,10 +1,5 @@
 package com.example.lab.secondweblabnew.services.dtos;
 
-import com.example.lab.secondweblabnew.models.Offer;
-import com.example.lab.secondweblabnew.models.UserRole;
-
-import java.util.Set;
-
 public class UserDTO {
 
     private String username;

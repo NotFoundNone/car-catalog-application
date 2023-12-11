@@ -1,10 +1,10 @@
 package com.example.lab.secondweblabnew.util;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validator;
 import java.util.Set;
 
 @Component

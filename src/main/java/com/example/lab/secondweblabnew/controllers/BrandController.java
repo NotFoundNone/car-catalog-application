@@ -3,8 +3,7 @@ package com.example.lab.secondweblabnew.controllers;
 import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.services.BrandService;
 import com.example.lab.secondweblabnew.services.dtos.AddBrandDto;
-import com.example.lab.secondweblabnew.services.dtos.AddUserDto;
-import com.example.lab.secondweblabnew.services.dtos.BrandDTO;
+import com.example.lab.secondweblabnew.services.dtos.UpdateBrandDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +30,11 @@ public class BrandController {
         return new AddBrandDto();
     }
 
+    @ModelAttribute("updateBrand")
+    public UpdateBrandDto getUpdateBrandDto() {
+        return new UpdateBrandDto();
+    }
+
     @GetMapping("/all")
     String getAll(Model model){
         List<Brand> brands = brandService.getAll();
@@ -38,12 +42,12 @@ public class BrandController {
         return "brands-all";
     }
 
-    @GetMapping("/{uuid}")
-    String getBrand (@PathVariable String uuid, Model model){
-        Optional<Brand> brand = brandService.findByUuid(uuid);
-        model.addAttribute("brand", brand.get());
-        return "brandPage";
-    }
+//    @GetMapping("/{uuid}")
+//    String getBrand (@PathVariable String uuid, Model model){
+//        Optional<Brand> brand = brandService.findByUuid(uuid);
+//        model.addAttribute("brand", brand.get());
+//        return "brandPage";
+//    }
 
     @GetMapping("/add")
     String addBrand()
@@ -63,16 +67,38 @@ public class BrandController {
         return "redirect:/brands/all";
     }
 
-    @PutMapping("/edit/{uuid}")
-    String editBrand(@PathVariable String uuid, @ModelAttribute BrandDTO brand){
-        brandService.update(uuid, brand);
-        return "redirect:/brandsPage";
+    @GetMapping("/brand-details/{brand-name}")
+    public String brandDetails(@PathVariable("brand-name") String brandName, org.springframework.ui.Model model) {
+        model.addAttribute("brandDetails", brandService.brandDetails(brandName));
+
+        return "brand-details";
     }
 
-    @DeleteMapping("/{uuid}")
-    String deleteBrand(@PathVariable String uuid)
+    @GetMapping("/brand-delete/{brand-name}")
+    String deleteModel(@PathVariable("brand-name") String brandName)
     {
-        brandService.deleteByUuid(uuid);
-        return "redirect:/brandsPage";
+        brandService.deleteByName(brandName);
+        return "redirect:/brands/all";
+    }
+
+    @GetMapping("/update/{uuid}")
+    String brandUpdate(@PathVariable("uuid") String uuid, Model model) {
+        model.addAttribute("updateBrandDto", brandService.findByUuid(uuid).orElse(null));
+        return "brand-update";
+    }
+
+    @PostMapping("/update/{uuid}")
+    String updateBrand(@ModelAttribute("updateBrand") @Valid UpdateBrandDto updateBrand,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes,
+                       @PathVariable("uuid") String uuid) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("updateBrandDto", updateBrand);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.updateBrand", bindingResult);
+            return "redirect:/brands/update/" + uuid;
+        }
+
+        brandService.update(updateBrand);
+        return "redirect:/brands/all";
     }
 }

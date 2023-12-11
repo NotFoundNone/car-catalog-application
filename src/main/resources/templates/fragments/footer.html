@@ -1,5 +1,7 @@
-<footer id="footer" class="footer mt-auto py-3 bg-light" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
+<footer id="footer" class="footer mt-auto py-3 " style="background-color: #e4e1df !important;" th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
   <div class="container">
-    <div class="text-muted p-2 text-center justify-content-end">&copy; Spring Team 2023. All rights reserved.</div>
+    <div class="text-muted p-2 text-center justify-content-end">&copy;
+        <span th:text="'Last update of Database:' + ' ' + ${#dates.createNow()}"></span>
+    </div>
   </div>
 </footer>

@@ -1,12 +1,12 @@
 package com.example.lab.secondweblabnew.services.impl;
 
-import com.example.lab.secondweblabnew.models.Brand;
 import com.example.lab.secondweblabnew.models.Model;
 import com.example.lab.secondweblabnew.repositories.BrandRepository;
 import com.example.lab.secondweblabnew.repositories.ModelRepository;
 import com.example.lab.secondweblabnew.services.ModelService;
 import com.example.lab.secondweblabnew.services.dtos.AddModelDto;
 import com.example.lab.secondweblabnew.services.dtos.ModelDTO;
+import com.example.lab.secondweblabnew.services.dtos.ShowDetailedModelInfoDto;
 import com.example.lab.secondweblabnew.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -47,9 +47,8 @@ public class ModelServiceImpl implements ModelService {
                     .forEach(System.out::println);
         } else {
             try {
-//                this.modelRepository
-//                        .saveAndFlush(this.modelMapper.map(modelDTO, Model.class));
                 Model model = modelMapper.map(modelDTO, Model.class);
+                model.setImageURL("https://someimage.ru/firtsCarImage.jpg");
                 model.setBrand(brandRepository.findByName(modelDTO.getBrandName()).orElse(null));
                 this.modelRepository.saveAndFlush(model);
             } catch (Exception e) {
@@ -82,11 +81,39 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+    public ShowDetailedModelInfoDto modelDetails(String modelName)
+    {
+        return modelMapper.map(modelRepository.findByName(modelName).orElse(null), ShowDetailedModelInfoDto.class);
+    }
+
+    @Override
     public void deleteByUuid(String uuid) { modelRepository.deleteById(uuid); }
+
+    @Override
+    public void deleteByFullName(String fullName)
+    {
+        modelRepository.deleteModelByFullName(fullName);
+    }
+
+//    @Autowired
+//    private EntityManager entityManager;
+//
+//    @Transactional
+//    public void deleteByFullName(String fullName) {
+//        Model model = modelRepository.findByFullName(fullName).orElse(null);
+//        if (model != null) {
+//            entityManager.remove(model);
+//        }
+//    }
 
     @Override
     public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
 
     @Override
     public List<Model> getAll() { return modelRepository.findAll(); }
+
+    @Override
+    public void deleteByName(String modelName) {
+        modelRepository.deleteByName(modelName);
+    }
 }
