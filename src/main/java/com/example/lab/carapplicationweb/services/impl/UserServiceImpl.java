@@ -7,6 +7,7 @@ import com.example.lab.carapplicationweb.repositories.UserRepository;
 import com.example.lab.carapplicationweb.repositories.UserRoleRepository;
 import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.AddUserDto;
+import com.example.lab.carapplicationweb.services.dtos.EditUser;
 import com.example.lab.carapplicationweb.services.dtos.UserDTO;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -65,32 +66,6 @@ public class UserServiceImpl implements UserService {
         return user.getRole().stream().anyMatch(role -> role.getRole() == Role.ADMIN);
     }
 
-
-    @Override
-    public void update(String uuid, UserDTO newUserDTO) {
-        if (!validationUtil.isValid(newUserDTO))
-        {
-            this.validationUtil
-                    .violations(newUserDTO)
-                    .stream()
-                    .map(ConstraintViolation::getMessage)
-                    .forEach(System.out::println);
-        } else {
-            try {
-                Optional<User> existingUser = userRepository.findById(uuid);
-                if (existingUser == null)
-                    throw new EntityNotFoundException("User not found!");
-                User user = existingUser.get();
-                modelMapper.map(newUserDTO, user);
-                userRepository.saveAndFlush(user);
-            }
-            catch (Exception e) {
-                System.out.println("Oops, something went wrong! :(");
-            }
-        }
-    }
-
-
     @Override
     public void deleteByUuid(String uuid) {
         userRepository.deleteById(uuid);
@@ -109,6 +84,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUsername(String userName) {
         return this.userRepository.findUserByUsername(userName).orElse(null);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public EditUser update(EditUser editUser) {
+        User user = findByUsername(editUser.getUsername());
+        user.setFirstName(editUser.getFirstName());
+        user.setLastName(editUser.getLastName());
+        return modelMapper.map(userRepository.save(user), EditUser.class);
     }
 
 }

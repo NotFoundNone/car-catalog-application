@@ -1,6 +1,8 @@
 package com.example.lab.carapplicationweb.controllers;
 
 import com.example.lab.carapplicationweb.models.User;
+import com.example.lab.carapplicationweb.services.UserService;
+import com.example.lab.carapplicationweb.services.dtos.EditUser;
 import com.example.lab.carapplicationweb.services.dtos.UserRegistrationDto;
 import com.example.lab.carapplicationweb.services.impl.AuthService;
 import com.example.lab.carapplicationweb.views.UserProfileView;
@@ -23,6 +25,7 @@ import java.security.Principal;
 public class AuthController {
 
     private AuthService authService;
+    private UserService userService;
 
     @Autowired
     public AuthController(AuthService authService) {
@@ -32,6 +35,13 @@ public class AuthController {
     public void setAuthService(AuthService authService) {
         this.authService = authService;
     }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+
 
     @ModelAttribute("userRegistrationDto")
     public UserRegistrationDto initForm() {
@@ -90,5 +100,24 @@ public class AuthController {
         model.addAttribute("user", userProfileView);
 
         return "profile";
+    }
+
+    @GetMapping("/profile/edit")
+    public String showEditProfile(Model model, Principal principal) {
+        User editUser = userService.findByUsername(principal.getName());
+        model.addAttribute("user", editUser);
+        return "editUser";
+    }
+
+    @PostMapping("/profile/edit")
+    public String editProfile(@Valid @ModelAttribute("user") EditUser editUser,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "editUser";
+        }
+
+        userService.update(editUser);
+
+        return "redirect:/users/profile";
     }
 }

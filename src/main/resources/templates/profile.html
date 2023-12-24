@@ -22,6 +22,7 @@
             <b>User Roles: </b>
             <div sec:authentication="principal.authorities"></div>
             <a class="nav-item nav-link text-white text-center fs-5 mt-3" href="/offers/user-offers">Your offers</a>
+            <a th:href="@{/users/profile/edit}" class="btn btn-primary">Редактировать профиль</a>
             <div class="align-bottom mt-3">
               <form
                       th:method="post"

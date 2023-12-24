@@ -2,6 +2,7 @@ package com.example.lab.carapplicationweb.services;
 
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.services.dtos.AddUserDto;
+import com.example.lab.carapplicationweb.services.dtos.EditUser;
 import com.example.lab.carapplicationweb.services.dtos.UserDTO;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface UserService {
     void add(AddUserDto userDTO);
 
-    void update(String uuid, UserDTO newUserDTO);
+//    void update(String uuid, UserDTO newUserDTO);
 
     void deleteByUuid(String uuid);
 
@@ -21,5 +22,7 @@ public interface UserService {
     List<User> getAll();
 
     public User findByUsername(String userName);
+
+    public EditUser update(EditUser editUser);
 
 }
