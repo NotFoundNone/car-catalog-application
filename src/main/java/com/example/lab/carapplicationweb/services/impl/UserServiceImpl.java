@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean isUserAdmin(String username) {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return user.getRole().stream().anyMatch(role -> role.getRole() == Role.ADMIN);
     }
@@ -105,4 +105,10 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User findByUsername(String userName) {
+        return this.userRepository.findUserByUsername(userName).orElse(null);
+    }
+
 }

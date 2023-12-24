@@ -20,4 +20,6 @@ public interface UserService {
 
     List<User> getAll();
 
+    public User findByUsername(String userName);
+
 }

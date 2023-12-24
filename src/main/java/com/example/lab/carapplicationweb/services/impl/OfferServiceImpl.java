@@ -19,7 +19,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -62,19 +61,11 @@ public class OfferServiceImpl implements OfferService {
                     .forEach(System.out::println);
         } else {
             try {
-//                Offer offer = modelMapper.map(offerDTO, Offer.class);
-//                String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-//                if (userService.isUserAdmin(currentUsername)) {
-//                    offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
-//                }
-//                else{
-//                    offer.setSeller(userRepository.findByUsername(currentUsername).orElse(null));
-//                }
-//                offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
-//                this.offerRepository.saveAndFlush(offer);
+//                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
                 Offer offer = modelMapper.map(offerDTO, Offer.class);
                 offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
-                offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
+                offer.setSeller(userRepository.findUserByUsername(offerDTO.getSellerUsername()).orElse(null));
+//                offer.setSeller(currentUser);
                 this.offerRepository.saveAndFlush(offer);
             }
             catch (Exception e) {
@@ -139,7 +130,7 @@ public class OfferServiceImpl implements OfferService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        User seller = userRepository.findByUsername(sellerUsername)
+        User seller = userRepository.findUserByUsername(sellerUsername)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Offer> offers = offerRepository.findAllBySeller(seller);
         return offers.stream()

@@ -1,6 +1,7 @@
 package com.example.lab.carapplicationweb.controllers;
 
 import com.example.lab.carapplicationweb.models.Offer;
+import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.services.ModelService;
 import com.example.lab.carapplicationweb.services.OfferService;
 import com.example.lab.carapplicationweb.services.UserService;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -67,12 +69,15 @@ public class OfferController {
     {
         LOG.log(Level.INFO, "Open add offer page for " + principal.getName());
         model.addAttribute("models", modelService.getAll());
-        model.addAttribute("sellers", userService.getAll());
-//        model.addAttribute("user", principal.getName());
-//
-//        if (userService.isUserAdmin(principal.getName())) {
-//            model.addAttribute("sellers", userService.getAll());
-//        }
+//        model.addAttribute("sellers", userService.getAll());
+        if (userService.isUserAdmin(principal.getName())) {
+            model.addAttribute("sellers", userService.getAll());
+        }
+        else
+        {
+            User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("sellers", currentUser);
+        }
         return "offer-add";
     }
 
