@@ -1,57 +1,76 @@
 package com.example.lab.carapplicationweb.init;
 
-
-import com.example.lab.carapplicationweb.enums.Category;
-import com.example.lab.carapplicationweb.enums.Engine;
 import com.example.lab.carapplicationweb.enums.Role;
-import com.example.lab.carapplicationweb.enums.Transmission;
-import com.example.lab.carapplicationweb.services.dtos.*;
-import com.example.lab.carapplicationweb.services.impl.OfferServiceImpl;
-import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.lab.carapplicationweb.models.User;
+import com.example.lab.carapplicationweb.models.UserRole;
+import com.example.lab.carapplicationweb.repositories.UserRepository;
+import com.example.lab.carapplicationweb.repositories.UserRoleRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 
-@ToString
+import java.util.List;
+
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-    @Autowired
-    private OfferServiceImpl offerService;
+    private final UserRepository userRepository;
+
+    private final UserRoleRepository userRoleRepository;
+
+    private final PasswordEncoder passwordEncoder;
+    private final String defaultPassword;
+
+
+    public DataInitializer(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder,@Value("${app.default.password}") String defaultPassword) {
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.defaultPassword = defaultPassword;
+    }
 
     @Override
     public void run(String... args) throws Exception {
-        initData();
+        initRoles();
+        initUsers();
     }
 
-    private void initData() throws IOException {
-        BrandDTO firstBrandDTO = new BrandDTO("BMW");
-        BrandDTO secondBrandDTO = new BrandDTO("Mercedes");
-        BrandDTO thirdBrandDTO = new BrandDTO("Audi");
+    private void initRoles() {
+        if (userRoleRepository.count() == 0) {
+            var adminRole = new UserRole(Role.ADMIN);
+            var normalUserRole = new UserRole(Role.USER);
+            userRoleRepository.save(adminRole);
+            userRoleRepository.save(normalUserRole);
+        }
+    }
 
-        ModelDTO firstModelDTO = new ModelDTO("BMW X5", Category.CAR, "https://someimage.ru/firtsCarImage.jpg", 2007, 2023, firstBrandDTO);
-        ModelDTO secondModelDTO = new ModelDTO("Mercedes Actros", Category.TRUCK, "https://someimage.ru/secondTruckImage.jpg", 2010, 2020, secondBrandDTO);
-        ModelDTO thirdModelDTO = new ModelDTO("Audi", Category.CAR, "https://someimage.ru/secondCarImage.jpg", 2020, 2023, thirdBrandDTO);
+    private void initUsers() {
+        if (userRepository.count() == 0) {
+            initAdmin();
+            initNormalUser();
+        }
+    }
+//
+    private void initAdmin(){
+        var adminRole = userRoleRepository.
+                findUserRoleByRole(Role.ADMIN).orElseThrow();
 
-        UserRoleDTO firstRoleDTO = new UserRoleDTO(Role.ADMIN);
-        UserRoleDTO secondRoleDTO = new UserRoleDTO(Role.USER);
+        var adminUser = new User("admin","Nikita", "Dema", "admin@example.com", passwordEncoder.encode(defaultPassword));
+        adminUser.setRole(List.of(adminRole));
 
-        UserDTO firstUserDTO = new UserDTO("NotFoundNone", "qwerty", "Nikita", "Dema", true, "https://someimage.ru/firtsUserImage.jpg", firstRoleDTO);
-        UserDTO secondUserDTO = new UserDTO("Jared", "12345", "Jared", "James", true, "https://someimage.ru/secondUserImage.jpg", secondRoleDTO);
+        userRepository.save(adminUser);
+    }
 
-        OfferDTO firstOfferDTO = new OfferDTO("first discription", Engine.HYBRID, "https://someimage.ru/firtsOfferImage.jpg", 20156, 1990000, Transmission.AUTOMATIC, 2020, firstModelDTO, firstUserDTO);
-        OfferDTO secondOfferDTO = new OfferDTO("second discription", Engine.GASOLINE, "https://someimage.ru/secondOfferImage.jpg", 18764, 3100000, Transmission.MANUAL, 2017,secondModelDTO, secondUserDTO);
-        OfferDTO thirdOfferDTO = new OfferDTO("third discription", Engine.GASOLINE, "https://someimage.ru/thirdOfferImage.jpg", 23567, 7100000, Transmission.MANUAL, 2020,thirdModelDTO, firstUserDTO);
+    private void initNormalUser(){
+        var userRole = userRoleRepository.
+                findUserRoleByRole(Role.USER).orElseThrow();
 
-//        offerService.add(firstOfferDTO);
-//        offerService.add(secondOfferDTO);
-//        offerService.add(thirdOfferDTO);;
+        var normalUser = new User("user", passwordEncoder.encode(defaultPassword), "user@example.com", "User Userovich", "22");
+        normalUser.setRole(List.of(userRole));
 
-
-//        offerService.findByPriceLessThan(10000000).forEach(System.out::println);
-
-
+        userRepository.save(normalUser);
     }
 }
+

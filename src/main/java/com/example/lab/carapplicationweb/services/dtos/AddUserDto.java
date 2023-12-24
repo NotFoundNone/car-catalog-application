@@ -15,7 +15,7 @@ public class AddUserDto {
 
     private String password;
 
-    private UserRole role;
+    private String role;
 
     @NotNull(message = "First name cannot be null or empty!")
     @Size(min = 2, message = "First name should be at least 2 characters long!")
@@ -56,11 +56,11 @@ public class AddUserDto {
         this.password = password;
     }
 
-    public UserRole getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(String role) {
         this.role = role;
     }
 }

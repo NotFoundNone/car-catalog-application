@@ -16,5 +16,8 @@ public interface UserService {
 
     Optional<User> findByUuid(String uuid);
 
+    public boolean isUserAdmin(String username);
+
     List<User> getAll();
+
 }

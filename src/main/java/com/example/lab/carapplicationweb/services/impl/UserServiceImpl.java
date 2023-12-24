@@ -4,6 +4,7 @@ import com.example.lab.carapplicationweb.enums.Role;
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.models.UserRole;
 import com.example.lab.carapplicationweb.repositories.UserRepository;
+import com.example.lab.carapplicationweb.repositories.UserRoleRepository;
 import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.AddUserDto;
 import com.example.lab.carapplicationweb.services.dtos.UserDTO;
@@ -12,14 +13,18 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@EnableCaching
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private UserRoleRepository userRoleRepository;
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
@@ -33,26 +38,33 @@ public class UserServiceImpl implements UserService {
     public void setUserRepository (UserRepository userRepository) { this.userRepository = userRepository; }
 
     @Override
-    public void add(AddUserDto userDTO) {
-        if (!validationUtil.isValid(userDTO))
+    @CacheEvict(cacheNames = "users", allEntries = true)
+    public void add(AddUserDto newUser) {
+        if (!validationUtil.isValid(newUser))
         {
             this.validationUtil
-                    .violations(userDTO)
+                    .violations(newUser)
                     .stream()
                     .map(ConstraintViolation::getMessage)
                     .forEach(System.out::println);
         } else {
             try {
-                UserRole user = new UserRole();
-                user.setRole(Role.USER);
-                userDTO.setRole(user);
-                this.userRepository.saveAndFlush(this.modelMapper.map(userDTO, User.class));
+                User user = modelMapper.map(newUser, User.class);
+                user.setRole((List<UserRole>) userRoleRepository.findUserRoleByRole(newUser.getRole()).orElse(null));
+                this.userRepository.saveAndFlush(user);
             }
             catch (Exception e) {
                 System.out.println("Oops, something went wrong! :(");
             }
         }
     }
+
+    public boolean isUserAdmin(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return user.getRole().stream().anyMatch(role -> role.getRole() == Role.ADMIN);
+    }
+
 
     @Override
     public void update(String uuid, UserDTO newUserDTO) {
@@ -77,6 +89,7 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
 
     @Override
     public void deleteByUuid(String uuid) {

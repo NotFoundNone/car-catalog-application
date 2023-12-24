@@ -1,14 +1,15 @@
 package com.example.lab.carapplicationweb.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseCreatedEntity{
+public class User extends BaseCreatedEntity implements Serializable {
     private String username;
 
     private String password;
@@ -21,9 +22,25 @@ public class User extends BaseCreatedEntity{
 
     private String imageURL;
 
-    private UserRole role;
+    private String email;
+
+    private List<UserRole> role;
 
     private Set<Offer> offers;
+
+    public User(String username, String firstName, String lastName, String email, String password) {
+        this();
+
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User() {
+        this.role = new ArrayList<>();
+    }
 
     @Column(name = "username")
     public String getUsername() {
@@ -79,18 +96,25 @@ public class User extends BaseCreatedEntity{
         this.imageURL = imageURL;
     }
 
-    @ManyToOne(optional = false)
-    @Cascade({CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name = "role_uuid", referencedColumnName = "uuid", nullable = false)
-    public UserRole getRole() {
+    @Column(name = "email", length = 255,unique = true)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<UserRole> getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(List<UserRole> role) {
         this.role = role;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "seller", cascade = jakarta.persistence.CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "seller", cascade = CascadeType.REMOVE)
     public Set<Offer> getOffers() {
         return offers;
     }

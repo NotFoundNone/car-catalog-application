@@ -1,7 +1,18 @@
-<nav class="navbar bg-body-tertiary fixed-top p-2">
+<nav class="navbar bg-body-tertiary fixed-top p-2" xmlns:sec="http://www.w3.org/1999/xhtml">
   <div class="container-fluid">
     <img src="/pic/car.png" height="60px">
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+    <ul class="navbar-nav ms-auto d-flex flex-row">
+      <li class="nav-item me-3" sec:authorize="!isAuthenticated()">
+        <a class="nav-item nav-link text-dark" th:href="@{/users/login}">Login</a>
+      </li>
+      <li class="nav-item" sec:authorize="!isAuthenticated()">
+        <a class="nav-item nav-link text-dark" th:href="@{/users/register}">Register</a>
+      </li>
+    </ul>
+    <li class="nav-item me-3" sec:authorize="isAuthenticated()">
+      <a class="nav-item nav-link text-dark text-info" href="/users/profile"><th:block sec:authentication="name"></th:block></a>
+    </li>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation" sec:authorize="isAuthenticated()">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -14,7 +25,7 @@
           <li class="nav-item">
             <a class="nav-item nav-link text-dark text-center fs-5" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item dropdown">
+          <li sec:authorize="hasRole('ADMIN')" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-center fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Add
             </a>
@@ -22,8 +33,10 @@
               <li><a class="dropdown-item text-center fs-6" href="/brands/add">Brand</a></li>
               <li><a class="dropdown-item text-center fs-6" href="/models/add">Model</a></li>
               <li><a class="dropdown-item text-center fs-6" href="/offers/add">Offer</a></li>
-              <li><a class="dropdown-item text-center fs-6" href="/users/add">User</a></li>
             </ul>
+          </li>
+          <li sec:authorize="hasRole('USER')" class="nav-item">
+            <a class="nav-item nav-link text-dark text-center fs-5" href="/offers/add">Add offer</a>
           </li>
           <li class="nav-item">
             <a class="nav-item nav-link text-dark text-center fs-5" href="/brands/all">Brands</a>
@@ -33,9 +46,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-item nav-link text-dark text-center fs-5" href="/offers/all">Offers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-item nav-link text-dark text-center fs-5" href="/users/all">Users</a>
           </li>
         </ul>
       </div>
