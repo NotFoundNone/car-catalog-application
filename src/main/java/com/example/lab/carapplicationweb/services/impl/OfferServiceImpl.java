@@ -104,7 +104,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(cacheNames = "offers", allEntries = true)
     public void deleteByFullName(String fullName)
     {
         offerRepository.deleteOfferByFullName(fullName);
