@@ -25,7 +25,7 @@
                         <h4 th:text="'Engine: ' + ${offerDetails.engine}"></h4>
                         <h4 th:text="'Discription: ' + ${offerDetails.discription}"></h4>
                         <div class="align-bottom"><a class="btn btn-danger align-bottom"
-                                                     th:href="@{/offers/offer-delete/{full-model-name}(full-model-name=*{offerDetails.modelName} + ' ' + *{offerDetails.sellerUsername} + ' ' + *{offerDetails.year} + ' ' + *{offerDetails.price} + ' ' + *{offerDetails.mileage})}">Delete model</a>
+                                                     th:href="@{/offers/offer-delete/{full-model-name}(full-model-name=*{offerDetails.modelName} + ' ' + *{offerDetails.sellerUsername} + ' ' + *{offerDetails.year} + ' ' + *{offerDetails.price} + ' ' + *{offerDetails.mileage})}">Delete offer</a>
                         </div>
                     </div>
                 </div>

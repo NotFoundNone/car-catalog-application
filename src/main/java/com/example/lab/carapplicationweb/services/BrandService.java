@@ -2,6 +2,7 @@ package com.example.lab.carapplicationweb.services;
 
 import com.example.lab.carapplicationweb.models.Brand;
 import com.example.lab.carapplicationweb.services.dtos.AddBrandDto;
+import com.example.lab.carapplicationweb.services.dtos.ShowBrandInfoDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedBrandInfoDto;
 import com.example.lab.carapplicationweb.services.dtos.UpdateBrandDto;
 
@@ -22,7 +23,7 @@ public interface BrandService{
 
     Optional<UpdateBrandDto> findByUuid(String uuid);
 
-    List<Brand> getAll();
+    List<ShowBrandInfoDto> getAll();
 
     void deleteByName(String brandName);
 }

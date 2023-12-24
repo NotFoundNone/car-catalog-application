@@ -3,6 +3,8 @@ package com.example.lab.carapplicationweb.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,6 +14,10 @@ public class Brand extends BaseCreatedEntity{
     String name;
 
     Set<Model> model;
+
+    public Brand() {
+        model = new HashSet<>();
+    }
 
     @Column(name = "name")
     public String getName() {
@@ -29,10 +35,6 @@ public class Brand extends BaseCreatedEntity{
 
     public void setModel(Set<Model> model) {
         this.model = model;
-    }
-
-    protected Brand(){
-
     }
 
     public Brand(LocalDate created,

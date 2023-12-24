@@ -4,6 +4,7 @@ import com.example.lab.carapplicationweb.models.Model;
 import com.example.lab.carapplicationweb.services.dtos.AddModelDto;
 import com.example.lab.carapplicationweb.services.dtos.ModelDTO;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedModelInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.ShowModelInfoDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public interface ModelService {
 
     Optional<Model> findByUuid(String uuid);
 
-    List<Model> getAll();
+    List<ShowModelInfoDto> getAll();
 
     void deleteByName(String modelName);
 }

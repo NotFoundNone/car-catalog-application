@@ -10,13 +10,11 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="jumbotron text-center rounded col-md-12 align-self-center pt-5">
-                <h2 class="text-center text-dark mt-5">All models</h2>
+                <h2 class="text-center text-light mt-5">All models</h2>
                 <div class='row mb-4 d-flex justify-content-around'>
                     <div th:each="e : ${modelModels}" class="col-md-4 d-flex flex-column bg-text mb-5 rounded">
-                        <h2 th:text="'Name: ' + *{e.name}"></h2>
-                        <h2 th:text="'Brand: ' + *{e.brand}"></h2>
-                        <h2 th:text="'StartYear: ' + *{e.startYear}"></h2>
-                        <h2 th:text="'EndYear: ' + *{e.endYear}"></h2>
+                        <h2 th:text="'Brand: ' + *{e.brandName}"></h2>
+                        <h2 th:text="'Model: ' + *{e.name}"></h2>
                         <h2 th:text="'Category: ' + *{e.category}"></h2>
                         <h4><a class="btn-block"
                                th:href="@{/models/model-details/{model-name}(model-name=*{e.name})}">Detail

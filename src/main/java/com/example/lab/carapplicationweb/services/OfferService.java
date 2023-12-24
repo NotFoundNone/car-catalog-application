@@ -4,7 +4,9 @@ import com.example.lab.carapplicationweb.models.Offer;
 import com.example.lab.carapplicationweb.services.dtos.AddOfferDto;
 import com.example.lab.carapplicationweb.services.dtos.OfferDTO;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedOfferInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.ShowOfferInfoDto;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +26,7 @@ public interface OfferService {
 
     Optional<Offer> findByUuid(String uuid);
 
-    List<Offer> getAll();
+    List<ShowOfferInfoDto> getAll();
+
+    public List<ShowOfferInfoDto> getAllBySeller(String username);
 }

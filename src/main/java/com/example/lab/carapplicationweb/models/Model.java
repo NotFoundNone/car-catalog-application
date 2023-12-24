@@ -3,6 +3,8 @@ package com.example.lab.carapplicationweb.models;
 import com.example.lab.carapplicationweb.enums.Category;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -22,6 +24,23 @@ public class Model extends BaseCreatedEntity{
     private Brand brand;
 
     private Set<Offer> offers;
+
+    public Model(LocalDate created,
+                 LocalDate modified,
+                 String name,
+                 Category category,
+                 String imageURL,
+                 Integer startYear,
+                 Integer endYear,
+                 Brand brand) {
+        super(created, modified);
+        this.name = name;
+        this.category = category;
+        this.imageURL = imageURL;
+        this.startYear = startYear;
+        this.endYear = endYear;
+        this.brand = brand;
+    }
 
     public Model() {
     }

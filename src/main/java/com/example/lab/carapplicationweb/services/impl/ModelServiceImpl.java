@@ -7,17 +7,23 @@ import com.example.lab.carapplicationweb.services.ModelService;
 import com.example.lab.carapplicationweb.services.dtos.AddModelDto;
 import com.example.lab.carapplicationweb.services.dtos.ModelDTO;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedModelInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.ShowModelInfoDto;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@EnableCaching
 public class ModelServiceImpl implements ModelService {
     private ModelRepository modelRepository;
     private BrandRepository brandRepository;
@@ -37,6 +43,7 @@ public class ModelServiceImpl implements ModelService {
     public void setBrandRepository (BrandRepository brandRepository){ this.brandRepository = brandRepository; }
 
     @Override
+    @CacheEvict(cacheNames = "models", allEntries = true)
     public void add(AddModelDto modelDTO) {
         if (!this.validationUtil.isValid(modelDTO))
         {
@@ -58,6 +65,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+//    @CacheEvict(cacheNames = "models", allEntries = true)
     public void update(String uuid, ModelDTO newModelDTO) {
         if (!this.validationUtil.isValid(newModelDTO))
         {
@@ -87,9 +95,11 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
+//    @CacheEvict(cacheNames = "models", allEntries = true)
     public void deleteByUuid(String uuid) { modelRepository.deleteById(uuid); }
 
     @Override
+//    @CacheEvict(cacheNames = "models", allEntries = true)
     public void deleteByFullName(String fullName)
     {
         modelRepository.deleteModelByFullName(fullName);
@@ -110,9 +120,19 @@ public class ModelServiceImpl implements ModelService {
     public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
 
     @Override
-    public List<Model> getAll() { return modelRepository.findAll(); }
+    @Cacheable("models")
+    public List<ShowModelInfoDto> getAll() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return modelRepository.findAll().stream().map(model -> modelMapper.map(model, ShowModelInfoDto.class))
+                .collect(Collectors.toList());
+    }
 
     @Override
+    @CacheEvict(cacheNames = {"models", "offers"},  allEntries = true)
     public void deleteByName(String modelName) {
         modelRepository.deleteByName(modelName);
     }

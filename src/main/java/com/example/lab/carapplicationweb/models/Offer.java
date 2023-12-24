@@ -4,6 +4,9 @@ import com.example.lab.carapplicationweb.enums.Engine;
 import com.example.lab.carapplicationweb.enums.Transmission;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "offers")
 public class Offer extends BaseCreatedEntity{
@@ -25,6 +28,29 @@ public class Offer extends BaseCreatedEntity{
     private Model model;
 
     private User seller;
+
+    public Offer(LocalDate created,
+                 LocalDate modified,
+                 String description,
+                 Engine engine,
+                 String imageURL,
+                 Integer milleage,
+                 Integer price,
+                 Transmission transmission,
+                 Integer year,
+                 Model model,
+                 User seller) {
+        super(created, modified);
+        this.discription = description;
+        this.engine = engine;
+        this.imageURL = imageURL;
+        this.mileage = milleage;
+        this.price = price;
+        this.transmission = transmission;
+        this.year = year;
+        this.model = model;
+        this.seller = seller;
+    }
 
     public Offer() {
     }
