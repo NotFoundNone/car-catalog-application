@@ -49,13 +49,6 @@ public class BrandController {
         return "brands-all";
     }
 
-//    @GetMapping("/{uuid}")
-//    String getBrand (@PathVariable String uuid, Model model){
-//        Optional<Brand> brand = brandService.findByUuid(uuid);
-//        model.addAttribute("brand", brand.get());
-//        return "brandPage";
-//    }
-
     @GetMapping("/add")
     String addBrand(Principal principal)
     {

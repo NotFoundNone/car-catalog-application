@@ -8,6 +8,8 @@ public class ShowOfferInfoDto {
 
     private String modelName;
 
+//    private String brandName;
+
     private Engine engine;
 
     private int mileage;
@@ -33,6 +35,10 @@ public class ShowOfferInfoDto {
     public void setModelName(String modelName) {
         this.modelName = modelName;
     }
+
+//    public String getBrandName() { return brandName; }
+//
+//    public void setBrandName(String brandName) { this.brandName = brandName; }
 
     public Engine getEngine() {
         return engine;
