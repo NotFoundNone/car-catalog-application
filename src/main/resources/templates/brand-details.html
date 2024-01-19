@@ -18,7 +18,7 @@
             <h2>Model</h2>
             <h4 th:text="'Brand Name: ' + ${brandDetails.name}"></h4>
             <div class="align-bottom"><a class="btn btn-danger align-bottom"
-                                         th:href="@{/brands/update/{uuid}(uuid = ${brandDetails.name})}">Update brand</a>
+                                         th:href="@{/brands/edit/{brand-name}(brand-name = ${brandDetails.name})}">Update brand</a>
             </div>
             <br/>
             <div class="align-bottom"><a class="btn btn-danger align-bottom"

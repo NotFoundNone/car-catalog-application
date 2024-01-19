@@ -6,24 +6,25 @@ import com.example.lab.carapplicationweb.services.BrandService;
 import com.example.lab.carapplicationweb.services.dtos.AddBrandDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowBrandInfoDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedBrandInfoDto;
-import com.example.lab.carapplicationweb.services.dtos.UpdateBrandDto;
+import com.example.lab.carapplicationweb.services.dtos.EditBrandDto;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.validation.ConstraintViolation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 //@EnableCaching
 public class BrandServiceImpl implements BrandService {
 
+    private static final Logger logger = LoggerFactory.getLogger(Brand.class);
     private BrandRepository brandRepository;
     private final ValidationUtil validationUtil;
     private ModelMapper modelMapper;
@@ -59,8 +60,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-//    @CacheEvict(cacheNames = "brands", allEntries = true)
-    public void update(UpdateBrandDto newBrandDTO) {
+    @CacheEvict(cacheNames = "brands", allEntries = true)
+    public void update(EditBrandDto newBrandDTO) {
+//        logger.info("Updating brand with UUID: {}", newBrandDTO.getUuid());
 
         if (!this.validationUtil.isValid(newBrandDTO))
         {
@@ -71,11 +73,13 @@ public class BrandServiceImpl implements BrandService {
                     .forEach(System.out::println);
         } else {
             try {
-                Optional<Brand> existingBrand = brandRepository.findByName(newBrandDTO.getName());
+                Optional<Brand> existingBrand = brandRepository.findByUuid(newBrandDTO.getUuid());
                 Brand brand = existingBrand.get();
                 modelMapper.map(newBrandDTO, brand);
                 brandRepository.saveAndFlush(brand);
+                logger.info("Brand updated successfully.");
             } catch (Exception e) {
+                logger.error("Error updating brand.", e);
                 System.out.println("Oops, something went wrong! :(");
             }
         }
@@ -92,8 +96,14 @@ public class BrandServiceImpl implements BrandService {
     public void deleteByUuid(String uuid) { brandRepository.deleteById(uuid);}
 
     @Override
-    public Optional<UpdateBrandDto> findByUuid(String uuid) {
-        return Optional.ofNullable(modelMapper.map(brandRepository.findByUuid(uuid), UpdateBrandDto.class));
+    public Optional<EditBrandDto> findByUuid(String uuid) {
+        return Optional.ofNullable(modelMapper.map(brandRepository.findByUuid(uuid), EditBrandDto.class));
+    }
+
+    @Override
+    public Optional<EditBrandDto> findByName(String brandName)
+    {
+        return Optional.ofNullable(modelMapper.map(brandRepository.findByName(brandName), EditBrandDto.class));
     }
 
     @Override

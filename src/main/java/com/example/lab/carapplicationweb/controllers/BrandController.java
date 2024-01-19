@@ -4,11 +4,12 @@ import com.example.lab.carapplicationweb.models.Brand;
 import com.example.lab.carapplicationweb.services.BrandService;
 import com.example.lab.carapplicationweb.services.dtos.AddBrandDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowBrandInfoDto;
-import com.example.lab.carapplicationweb.services.dtos.UpdateBrandDto;
+import com.example.lab.carapplicationweb.services.dtos.EditBrandDto;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/brands")
 public class BrandController {
 
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Brand.class);
     private BrandService brandService;
 
     private static final Logger LOG = LogManager.getLogger(Controller.class);
@@ -37,8 +40,8 @@ public class BrandController {
     }
 
     @ModelAttribute("updateBrand")
-    public UpdateBrandDto getUpdateBrandDto() {
-        return new UpdateBrandDto();
+    public EditBrandDto getUpdateBrandDto() {
+        return new EditBrandDto();
     }
 
     @GetMapping("/all")
@@ -85,26 +88,23 @@ public class BrandController {
         return "redirect:/brands/all";
     }
 
-    @GetMapping("/update/{uuid}")
-    String brandUpdate(@PathVariable("uuid") String uuid, Model model, Principal principal) {
-        LOG.log(Level.INFO, "Open brand page for " + principal.getName());
-        model.addAttribute("updateBrandDto", brandService.findByUuid(uuid).orElse(null));
-        return "brand-update";
+    @GetMapping("/edit/{brand-name}")
+    public String showEditBrand(@PathVariable("brand-name") String brandName, Model model) {
+        Optional<EditBrandDto> editBrand = brandService.findByName(brandName);
+        model.addAttribute("updateBrand", editBrand.orElse(new EditBrandDto()));
+        return "brand-edit";
     }
 
-    @PostMapping("/update/{uuid}")
-    String updateBrand(@ModelAttribute("updateBrand") @Valid UpdateBrandDto updateBrand,
-                       BindingResult bindingResult,
-                       RedirectAttributes redirectAttributes,
-                       @PathVariable("uuid") String uuid, Principal principal) {
+    @PostMapping("/edit/{brand-name}")
+    public String editBrand(@Valid @ModelAttribute("updateBrand") EditBrandDto editBrand,
+                              BindingResult bindingResult) {
+        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("updateBrandDto", updateBrand);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.updateBrand", bindingResult);
-            return "redirect:/brands/update/" + uuid;
+            return "brand-edit";
         }
 
-        LOG.log(Level.INFO, "Update brand (uuid: " + uuid + ")" + principal.getName());
-        brandService.update(updateBrand);
-        return "redirect:/brands/all";
+        brandService.update(editBrand);
+
+        return "redirect:/users/profile";
     }
 }

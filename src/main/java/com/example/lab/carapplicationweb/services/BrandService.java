@@ -1,10 +1,9 @@
 package com.example.lab.carapplicationweb.services;
 
-import com.example.lab.carapplicationweb.models.Brand;
 import com.example.lab.carapplicationweb.services.dtos.AddBrandDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowBrandInfoDto;
 import com.example.lab.carapplicationweb.services.dtos.ShowDetailedBrandInfoDto;
-import com.example.lab.carapplicationweb.services.dtos.UpdateBrandDto;
+import com.example.lab.carapplicationweb.services.dtos.EditBrandDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,7 @@ public interface BrandService{
 
     void add(AddBrandDto brandDTO);
 
-    void update(UpdateBrandDto newBrandDTO);
+    void update(EditBrandDto newBrandDTO);
 
     ShowDetailedBrandInfoDto brandDetails(String brandName);
 
@@ -21,7 +20,9 @@ public interface BrandService{
 
 //    Optional<Brand> findByUuid(String uuid);
 
-    Optional<UpdateBrandDto> findByUuid(String uuid);
+    Optional<EditBrandDto> findByUuid(String uuid);
+
+    Optional<EditBrandDto> findByName(String brandName);
 
     List<ShowBrandInfoDto> getAll();
 
