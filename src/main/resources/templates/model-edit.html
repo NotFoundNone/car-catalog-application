@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<head th:replace="~{fragments/head}"/>
+<body class="d-flex flex-column h-100">
+<style>
+    .form-select:checked {
+        background-color: #e4e1df;
+        color: #fff;
+    }
+</style>
+<div th:replace="~{fragments/oldNavbar}">Navbar</div>
+<div class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="jumbotron text-center rounded col-md-6 align-self-center pt-5">
+                <div class="justify-content-center">
+                    <h1>Edit Model</h1>
+                </div>
+                <form th:action="@{/models/edit/{model-name}}"
+                      th:method="post"
+                      th:object="${updateModel}"
+                      class="m-md-auto w-50 pb-3">
+                    <input type="hidden" th:field="*{uuid}"/>
+                    <div class="mb-3">
+                        <label class="form-label" for="name">Model Name</label>
+                        <input th:field="*{name}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center"
+                               id="name" aria-describedby="name" name="name"/>
+                        <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <fieldset class="mb-3">
+                        <legend>Choose Category</legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input th:field="*{category}"
+                                       th:value="CAR"
+                                       th:errorclass="is-invalid"
+                                       type="radio" class="form-check-input" name="educationLevel"/>
+                                <span>Car</span>
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input th:field="*{category}"
+                                       th:value="BUS"
+                                       th:errorclass="is-invalid"
+                                       type="radio" class="form-check-input" name="educationLevel"/>
+                                <span>Bus</span>
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input th:field="*{category}"
+                                       th:value="TRUCK"
+                                       th:errorclass="is-invalid"
+                                       type="radio" class="form-check-input " name="educationLevel"/>
+                                <span>Truck</span>
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input th:field="*{category}"
+                                       th:value="MOTORCYCLE"
+                                       th:errorclass="is-invalid"
+                                       type="radio" class="form-check-input " name="educationLevel"/>
+                                <span>Motorcycle</span>
+                            </label>
+                        </div>
+                        <small th:if="${#fields.hasErrors('category')}" th:errors="*{category}"
+                               class="text-danger">Error message</small>
+                    </fieldset>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="startYear">Start Year</label>
+                        <input th:field="*{startYear}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center"
+                               id="startYear" aria-describedby="startYear" name="startYear"/>
+                        <small th:if="${#fields.hasErrors('startYear')}" th:errors="*{startYear}" class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="endYear">End Year</label>
+                        <input th:field="*{endYear}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control text-center"
+                               id="endYear" aria-describedby="endYear" name="endYear"/>
+                        <small th:if="${#fields.hasErrors('endYear')}" th:errors="*{endYear}" class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="brand">Brand</label>
+                        <select multiple="false" class="form-select text-center"
+                                id="brand" name="name" th:field="*{brandName}">
+                            <option th:each="c : ${brands}"
+                                    th:value="${c.name}"
+                                    th:text="${c.name}">Brand name
+                            </option>
+                        </select>
+                        <small th:if="${#fields.hasErrors('brandName')}" th:errors="*{brandName}"
+                               class="text-danger">Error
+                            message</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary">Edit Model</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<footer th:replace="~{fragments/footer}"/>
+</html>

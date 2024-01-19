@@ -1,5 +1,6 @@
 package com.example.lab.carapplicationweb.repositories;
 
+import com.example.lab.carapplicationweb.models.Brand;
 import com.example.lab.carapplicationweb.models.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,8 @@ import java.util.Optional;
 public interface ModelRepository extends JpaRepository<Model, String>
 {
     Optional<Model> findByName(String name);
+
+    Optional<Model> findByUuid(String uuid);
 
     @Modifying
     @Transactional

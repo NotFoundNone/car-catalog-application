@@ -2,9 +2,7 @@ package com.example.lab.carapplicationweb.controllers;
 
 import com.example.lab.carapplicationweb.services.BrandService;
 import com.example.lab.carapplicationweb.services.ModelService;
-import com.example.lab.carapplicationweb.services.dtos.AddModelDto;
-import com.example.lab.carapplicationweb.services.dtos.ModelDTO;
-import com.example.lab.carapplicationweb.services.dtos.ShowModelInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.*;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +36,11 @@ public class ModelController {
     @ModelAttribute("modelModel")
     public AddModelDto initModel() {
         return new AddModelDto();
+    }
+
+    @ModelAttribute("updateModel")
+    public EditModelDto getEditModelDto() {
+        return new EditModelDto();
     }
 
     @GetMapping("/all")
@@ -84,18 +87,32 @@ public class ModelController {
         return "model-details";
     }
 
-    @PutMapping("/edit/{uuid}")
-    String editModel(@PathVariable String uuid, @ModelAttribute ModelDTO model, Principal principal){
-        LOG.log(Level.INFO, "Edit model for " + principal.getName());
-        modelService.update(uuid, model);
-        return "redirect:/modelsPage";
-    }
-
     @GetMapping("/model-delete/{full-model-name}")
     String deleteModel(@PathVariable("full-model-name") String fullName, Principal principal)
     {
         LOG.log(Level.INFO, "Delete model for " + principal.getName());
         modelService.deleteByName(fullName);
         return "redirect:/models/all";
+    }
+
+    @GetMapping("/edit/{model-name}")
+    public String showEditModel(@PathVariable("model-name") String modelName, Model model) {
+        Optional<EditModelDto> editModel = modelService.findByName(modelName);
+        model.addAttribute("updateModel", editModel.orElse(new EditModelDto()));
+        model.addAttribute("brands", brandService.getAll());
+        return "model-edit";
+    }
+
+    @PostMapping("/edit/{model-name}")
+    public String editBrand(@Valid @ModelAttribute("updateModel") EditModelDto editModel,
+                            BindingResult bindingResult) {
+//        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
+        if (bindingResult.hasErrors()) {
+            return "model-edit";
+        }
+
+        modelService.update(editModel);
+
+        return "redirect:/users/profile";
     }
 }

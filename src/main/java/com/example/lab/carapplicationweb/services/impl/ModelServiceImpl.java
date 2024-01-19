@@ -4,10 +4,7 @@ import com.example.lab.carapplicationweb.models.Model;
 import com.example.lab.carapplicationweb.repositories.BrandRepository;
 import com.example.lab.carapplicationweb.repositories.ModelRepository;
 import com.example.lab.carapplicationweb.services.ModelService;
-import com.example.lab.carapplicationweb.services.dtos.AddModelDto;
-import com.example.lab.carapplicationweb.services.dtos.ModelDTO;
-import com.example.lab.carapplicationweb.services.dtos.ShowDetailedModelInfoDto;
-import com.example.lab.carapplicationweb.services.dtos.ShowModelInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.*;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -65,8 +62,8 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-//    @CacheEvict(cacheNames = "models", allEntries = true)
-    public void update(String uuid, ModelDTO newModelDTO) {
+    @CacheEvict(cacheNames = "models", allEntries = true)
+    public void update(EditModelDto newModelDTO) {
         if (!this.validationUtil.isValid(newModelDTO))
         {
             this.validationUtil
@@ -76,9 +73,7 @@ public class ModelServiceImpl implements ModelService {
                     .forEach(System.out::println);
         } else {
             try {
-                Optional<Model> existingBrand = modelRepository.findById(uuid);
-                if (existingBrand == null)
-                    throw new EntityNotFoundException("Model not found!");
+                Optional<Model> existingBrand = modelRepository.findByUuid(newModelDTO.getUuid());
                 Model model = existingBrand.get();
                 modelMapper.map(newModelDTO, model);
                 modelRepository.saveAndFlush(model);
@@ -118,6 +113,12 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
+
+    @Override
+    public Optional<EditModelDto> findByName(String modelName)
+    {
+        return Optional.ofNullable(modelMapper.map(modelRepository.findByName(modelName), EditModelDto.class));
+    }
 
     @Override
     @Cacheable("models")
