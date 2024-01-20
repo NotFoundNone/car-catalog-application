@@ -25,6 +25,8 @@ public class Model extends BaseCreatedEntity{
 
     private Set<Offer> offers;
 
+    public Model() {}
+
     public Model(LocalDate created,
                  LocalDate modified,
                  String name,
@@ -40,9 +42,6 @@ public class Model extends BaseCreatedEntity{
         this.startYear = startYear;
         this.endYear = endYear;
         this.brand = brand;
-    }
-
-    public Model() {
     }
 
     @Column(name = "name")

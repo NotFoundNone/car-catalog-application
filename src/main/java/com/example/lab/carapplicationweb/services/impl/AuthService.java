@@ -65,7 +65,7 @@ public class AuthService {
     }
 
     public User getUser(String username) {
-        return userRepository.findUserByUsername(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " was not found!"));
     }
 }

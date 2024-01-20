@@ -29,6 +29,9 @@ public class Offer extends BaseCreatedEntity{
 
     private User seller;
 
+    public Offer() {
+    }
+
     public Offer(LocalDate created,
                  LocalDate modified,
                  String description,
@@ -50,9 +53,6 @@ public class Offer extends BaseCreatedEntity{
         this.year = year;
         this.model = model;
         this.seller = seller;
-    }
-
-    public Offer() {
     }
 
     @Column(name = "discription")

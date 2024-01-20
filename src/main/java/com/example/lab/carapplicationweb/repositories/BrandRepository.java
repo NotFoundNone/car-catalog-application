@@ -18,5 +18,4 @@ public interface BrandRepository extends JpaRepository <Brand, String> {
     @Modifying
     @Transactional
     void deleteByName(String name);
-
 }

@@ -19,7 +19,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username)
+        return userRepository.findByUsername(username)
                 .map(u -> new User(
                         u.getUsername(),
                         u.getPassword(),

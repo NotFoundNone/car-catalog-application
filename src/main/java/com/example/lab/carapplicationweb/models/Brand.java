@@ -19,6 +19,13 @@ public class Brand extends BaseCreatedEntity{
         model = new HashSet<>();
     }
 
+    public Brand(LocalDate created,
+                 LocalDate modified,
+                 String name) {
+        super(created, modified);
+        this.name = name;
+    }
+
     @Column(name = "name")
     public String getName() {
         return name;
@@ -35,13 +42,6 @@ public class Brand extends BaseCreatedEntity{
 
     public void setModel(Set<Model> model) {
         this.model = model;
-    }
-
-    public Brand(LocalDate created,
-                 LocalDate modified,
-                 String name) {
-        super(created, modified);
-        this.name = name;
     }
 
     @Override

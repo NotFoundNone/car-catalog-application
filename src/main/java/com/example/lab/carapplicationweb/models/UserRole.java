@@ -11,11 +11,11 @@ public class UserRole extends BaseEntity{
 
     private Role role;
 
-    public UserRole(Role role) {
-        this.role = role;
+    public UserRole() {
     }
 
-    public UserRole() {
+    public UserRole(Role role) {
+        this.role = role;
     }
 
     @Enumerated(EnumType.STRING)

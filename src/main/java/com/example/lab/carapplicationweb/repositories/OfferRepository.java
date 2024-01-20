@@ -15,8 +15,11 @@ import java.util.Optional;
 
 @Repository
 public interface OfferRepository extends JpaRepository <Offer, String> {
-    List<Offer> findAllBySeller(User seller);
+
     Optional<Offer> findByUuid(String uuid);
+
+    List<Offer> findAllBySeller(User seller);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Offer AS e WHERE CONCAT(e.model.name, ' ', e.seller.username, ' ', e.year, ' ', e.price, ' ', e.mileage) = :fullName")

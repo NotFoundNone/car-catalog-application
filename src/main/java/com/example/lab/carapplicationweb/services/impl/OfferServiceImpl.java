@@ -1,6 +1,5 @@
 package com.example.lab.carapplicationweb.services.impl;
 
-import com.example.lab.carapplicationweb.models.Model;
 import com.example.lab.carapplicationweb.models.Offer;
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.repositories.ModelRepository;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -65,7 +63,7 @@ public class OfferServiceImpl implements OfferService {
 //                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
                 Offer offer = modelMapper.map(offerDTO, Offer.class);
                 offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
-                offer.setSeller(userRepository.findUserByUsername(offerDTO.getSellerUsername()).orElse(null));
+                offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
 //                offer.setSeller(currentUser);
                 this.offerRepository.saveAndFlush(offer);
             }
@@ -129,7 +127,7 @@ public class OfferServiceImpl implements OfferService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        User seller = userRepository.findUserByUsername(sellerUsername)
+        User seller = userRepository.findByUsername(sellerUsername)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Offer> offers = offerRepository.findAllBySeller(seller);
         return offers.stream()

@@ -15,8 +15,4 @@ public interface UserRoleRepository extends JpaRepository <UserRole, String> {
     Optional<UserRole> findUserRoleByRole(String role);
 
     Optional<UserRole> findUserRoleByRole(Role role);
-
-    @Modifying
-    @Transactional
-    void deleteByRole(String role);
 }

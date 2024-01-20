@@ -8,7 +8,6 @@ import com.example.lab.carapplicationweb.repositories.UserRoleRepository;
 import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.AddUserDto;
 import com.example.lab.carapplicationweb.services.dtos.EditUser;
-import com.example.lab.carapplicationweb.services.dtos.UserDTO;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean isUserAdmin(String username) {
-        User user = userRepository.findUserByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         return user.getRole().stream().anyMatch(role -> role.getRole() == Role.ADMIN);
     }
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String userName) {
-        return this.userRepository.findUserByUsername(userName).orElse(null);
+        return this.userRepository.findByUsername(userName).orElse(null);
     }
 
     @CacheEvict(value = "users", allEntries = true)

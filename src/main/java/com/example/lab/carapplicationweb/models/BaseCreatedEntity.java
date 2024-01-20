@@ -22,11 +22,11 @@ import java.time.LocalDateTime;
 @Setter
 public abstract class BaseCreatedEntity extends BaseEntity {
 
-    @Column(name = "modified", columnDefinition = "DATE")
-    @LastModifiedDate
-    private LocalDate modified;
-
     @Column(name = "created", columnDefinition = "DATE")
     @CreatedDate
     private LocalDate created;
+
+    @Column(name = "modified", columnDefinition = "DATE")
+    @LastModifiedDate
+    private LocalDate modified;
 }
