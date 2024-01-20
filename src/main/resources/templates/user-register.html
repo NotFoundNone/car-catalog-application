@@ -83,6 +83,10 @@
                             message</small>
                     </div>
 
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <p th:text="${error}"></p>
+                    </div>
+
                     <button type="submit" class="btn btn-secondary">Register</button>
                 </form>
             </div>

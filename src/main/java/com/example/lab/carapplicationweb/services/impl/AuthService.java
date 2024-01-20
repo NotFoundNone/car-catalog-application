@@ -38,14 +38,14 @@ public class AuthService {
     }
 
     public void register(UserRegistrationDto registrationDTO) {
-        if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
-            throw new RuntimeException("passwords.match");
-        }
-
         Optional<User> byEmail = this.userRepository.findByEmail(registrationDTO.getEmail());
 
         if (byEmail.isPresent()) {
-            throw new RuntimeException("email.used");
+            throw new RuntimeException("Эта почта уже используется");
+        }
+
+        if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
+            throw new RuntimeException("Пароли должны совпадать");
         }
 
         var userRole = userRoleRepository.

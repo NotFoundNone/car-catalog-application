@@ -1,9 +1,11 @@
 package com.example.lab.carapplicationweb.services.dtos;
 
+import com.example.lab.carapplicationweb.util.UniqueUsername;
 import jakarta.validation.constraints.*;
 
 public class UserRegistrationDto {
 
+    @UniqueUsername
     private String username;
 
     private String firstName;

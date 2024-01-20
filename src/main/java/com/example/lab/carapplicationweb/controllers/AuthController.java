@@ -50,7 +50,7 @@ public class AuthController {
 
     @GetMapping("/register")
     public String register() {
-        return "register";
+        return "user-register";
     }
 
     @PostMapping("/register")
@@ -58,13 +58,19 @@ public class AuthController {
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+//            System.out.println("Validation errors: " + bindingResult.getAllErrors());
             redirectAttributes.addFlashAttribute("userRegistration", userRegistration);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegistration", bindingResult);
 
-            return "redirect:/users/register";
+            return "user-register";
         }
 
-        this.authService.register(userRegistration);
+        try {
+            this.authService.register(userRegistration);
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/users/register";
+        }
 
         return "redirect:/users/login";
     }
