@@ -4,6 +4,9 @@ import com.example.lab.carapplicationweb.enums.Engine;
 import com.example.lab.carapplicationweb.enums.Transmission;
 
 public class ShowDetailedOfferInfoDto {
+
+    private String uuid;
+
     private String discription;
 
     private Engine engine;
@@ -21,6 +24,14 @@ public class ShowDetailedOfferInfoDto {
     private String modelName;
 
     private String sellerUsername;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getDiscription() {
         return discription;

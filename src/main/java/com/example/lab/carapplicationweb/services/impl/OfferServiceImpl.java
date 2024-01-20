@@ -1,5 +1,6 @@
 package com.example.lab.carapplicationweb.services.impl;
 
+import com.example.lab.carapplicationweb.models.Model;
 import com.example.lab.carapplicationweb.models.Offer;
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.repositories.ModelRepository;
@@ -76,7 +77,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @CacheEvict(cacheNames = "brands", allEntries = true)
-    public void update(String uuid, OfferDTO newOfferDTO) {
+    public void update(EditOfferDto newOfferDTO) {
         if (!validationUtil.isValid(newOfferDTO)) {
             this.validationUtil
                     .violations(newOfferDTO)
@@ -85,10 +86,8 @@ public class OfferServiceImpl implements OfferService {
                     .forEach(System.out::println);
         } else {
             try {
-                Optional<Offer> existingBrand = offerRepository.findById(uuid);
-                if (existingBrand == null)
-                    throw new EntityNotFoundException("Offer not found!");
-                Offer offer = existingBrand.get();
+                Optional<Offer> existingOffer = offerRepository.findByUuid(newOfferDTO.getUuid());
+                Offer offer = existingOffer.get();
                 modelMapper.map(newOfferDTO, offer);
                 offerRepository.saveAndFlush(offer);
             } catch (Exception e) {
@@ -148,6 +147,12 @@ public class OfferServiceImpl implements OfferService {
     public Optional<Offer> findByUuid(String uuid) {
         return offerRepository.findById(uuid);
     }
+
+    @Override
+    public Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid) {
+        return Optional.ofNullable(modelMapper.map(offerRepository.findByUuid(uuid), EditOfferDto.class));
+    }
+
 
     @Override
     @Cacheable("offers")

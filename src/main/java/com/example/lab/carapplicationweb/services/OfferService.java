@@ -1,10 +1,7 @@
 package com.example.lab.carapplicationweb.services;
 
 import com.example.lab.carapplicationweb.models.Offer;
-import com.example.lab.carapplicationweb.services.dtos.AddOfferDto;
-import com.example.lab.carapplicationweb.services.dtos.OfferDTO;
-import com.example.lab.carapplicationweb.services.dtos.ShowDetailedOfferInfoDto;
-import com.example.lab.carapplicationweb.services.dtos.ShowOfferInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -14,7 +11,7 @@ public interface OfferService {
 
     void add(AddOfferDto offerDTO);
 
-    void update(String uuid, OfferDTO newOfferDTO);
+    void update(EditOfferDto newOfferDTO);
 
     ShowDetailedOfferInfoDto offerDetails(String offerUuid);
 
@@ -25,6 +22,8 @@ public interface OfferService {
     void deleteByUuid(String uuid);
 
     Optional<Offer> findByUuid(String uuid);
+
+    Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid);
 
     List<ShowOfferInfoDto> getAll();
 

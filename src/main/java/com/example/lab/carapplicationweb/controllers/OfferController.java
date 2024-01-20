@@ -5,9 +5,7 @@ import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.services.ModelService;
 import com.example.lab.carapplicationweb.services.OfferService;
 import com.example.lab.carapplicationweb.services.UserService;
-import com.example.lab.carapplicationweb.services.dtos.AddOfferDto;
-import com.example.lab.carapplicationweb.services.dtos.OfferDTO;
-import com.example.lab.carapplicationweb.services.dtos.ShowOfferInfoDto;
+import com.example.lab.carapplicationweb.services.dtos.*;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +44,11 @@ public class OfferController {
     @ModelAttribute("offerModel")
     public AddOfferDto initOffer() {
         return new AddOfferDto();
+    }
+
+    @ModelAttribute("updateOffer")
+    public EditOfferDto getEditOfferDto() {
+        return new EditOfferDto();
     }
 
     @GetMapping("/all")
@@ -117,18 +120,50 @@ public class OfferController {
         return "user-offers";
     }
 
-    @PutMapping("/edit/{uuid}")
-    String editOffer(@PathVariable String uuid, @ModelAttribute OfferDTO offer, Principal principal){
-        LOG.log(Level.INFO, "Edit offer for " + principal.getName());
-        offerService.update(uuid, offer);
-        return "redirect:/offersPage";
-    }
-
     @GetMapping("/offer-delete/{full-offer-name}")
     String deleteOffer(@PathVariable("full-offer-name") String fullName, Principal principal)
     {
         LOG.log(Level.INFO, "Delete offer for " + principal.getName());
         offerService.deleteByFullName(fullName);
         return "redirect:/offers/all";
+    }
+
+    @GetMapping("/edit/{uuid}")
+    public String showEditOffer(@PathVariable("uuid") String uuid, Model model, Principal principal) {
+        Optional<EditOfferDto> editOffer = offerService.findEditOfferDtoByUuid(uuid);
+
+        model.addAttribute("updateOffer", editOffer.orElse(new EditOfferDto()));
+        model.addAttribute("models", modelService.getAll());
+        if (userService.isUserAdmin(principal.getName())) {
+            model.addAttribute("sellers", userService.getAll());
+        }
+        else
+        {
+            User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("sellers", currentUser);
+        }
+        return "offer-edit";
+    }
+
+    @PostMapping("/edit/{uuid}")
+    public String editBrand(@Valid @ModelAttribute("updateOffer") EditOfferDto editOffer,
+                            BindingResult bindingResult, Model model, Principal principal) {
+//        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("models", modelService.getAll());
+            if (userService.isUserAdmin(principal.getName())) {
+                model.addAttribute("sellers", userService.getAll());
+            }
+            else
+            {
+                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+                model.addAttribute("sellers", currentUser);
+            }
+            return "offer-edit";
+        }
+
+        offerService.update(editOffer);
+
+        return "redirect:/users/profile";
     }
 }
