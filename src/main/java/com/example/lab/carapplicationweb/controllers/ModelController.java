@@ -105,9 +105,10 @@ public class ModelController {
 
     @PostMapping("/edit/{model-name}")
     public String editBrand(@Valid @ModelAttribute("updateModel") EditModelDto editModel,
-                            BindingResult bindingResult) {
+                            BindingResult bindingResult, Model model) {
 //        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
         if (bindingResult.hasErrors()) {
+            model.addAttribute("brands", brandService.getAll());
             return "model-edit";
         }
 

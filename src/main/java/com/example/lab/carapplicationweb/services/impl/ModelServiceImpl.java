@@ -73,8 +73,8 @@ public class ModelServiceImpl implements ModelService {
                     .forEach(System.out::println);
         } else {
             try {
-                Optional<Model> existingBrand = modelRepository.findByUuid(newModelDTO.getUuid());
-                Model model = existingBrand.get();
+                Optional<Model> existingModel = modelRepository.findByUuid(newModelDTO.getUuid());
+                Model model = existingModel.get();
                 modelMapper.map(newModelDTO, model);
                 modelRepository.saveAndFlush(model);
             } catch (Exception e) {

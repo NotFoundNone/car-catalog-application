@@ -14,9 +14,9 @@ public class EditModelDto {
 
     private Category category;
 
-    private int startYear;
+    private Integer startYear;
 
-    private int endYear;
+    private Integer endYear;
 
     private String brandName;
 
@@ -50,21 +50,21 @@ public class EditModelDto {
 
     @NotNull(message = "Start Year cannot be null or empty!")
     @Min(value = 1900, message = "Year must be greater than or equal to 1900")
-    public int getStartYear() {
+    public Integer getStartYear() {
         return startYear;
     }
 
-    public void setStartYear(int startYear) {
+    public void setStartYear(Integer startYear) {
         this.startYear = startYear;
     }
 
     @NotNull(message = "End Year cannot be null or empty!")
     @Max(value = 2100, message = "The year must be less than or equal to 2100.")
-    public int getEndYear() {
+    public Integer getEndYear() {
         return endYear;
     }
 
-    public void setEndYear(int endYear) {
+    public void setEndYear(Integer endYear) {
         this.endYear = endYear;
     }
 
