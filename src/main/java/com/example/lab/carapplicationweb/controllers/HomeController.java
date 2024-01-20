@@ -26,8 +26,10 @@ public class HomeController {
     @GetMapping("/")
     String getTop3MostExpensive(Principal principal, Model model) {
         LOG.log(Level.INFO, "Open home page and show top 3 most expensive car " + principal.getName());
+
         List<Offer> top3MostExpensiveOffers = offerService.getTop3MostExpensiveOffers();
         model.addAttribute("top3Offers", top3MostExpensiveOffers);
+
         return "home-index";
     }
 }

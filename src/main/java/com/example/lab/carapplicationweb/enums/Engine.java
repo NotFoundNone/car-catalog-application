@@ -9,5 +9,5 @@ public enum Engine {
 
     private int index;
 
-    Engine(int index){this.index = index; }
+    Engine(int index){this.index = index;}
 }

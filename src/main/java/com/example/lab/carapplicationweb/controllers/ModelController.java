@@ -46,52 +46,56 @@ public class ModelController {
     @GetMapping("/all")
     String getAll(Model model, Principal principal){
         LOG.log(Level.INFO, "Show all models for " + principal.getName());
+
         List<ShowModelInfoDto> models = modelService.getAll();
         model.addAttribute("modelModels", models);
+
         return "models-all";
     }
 
-    @GetMapping("/{uuid}")
-    String getModel (@PathVariable String uuid, Model model, Principal principal){
-        LOG.log(Level.INFO, "Show brand for " + principal.getName());
-        Optional<com.example.lab.carapplicationweb.models.Model> newModel = modelService.findByUuid(uuid);
-        model.addAttribute("model", newModel.get());
-        return "modelPage";
+    @GetMapping("/model-details/{model-name}")
+    public String modelDetails(@PathVariable("model-name") String modelName, org.springframework.ui.Model model, Principal principal) {
+        LOG.log(Level.INFO, "Show model details for " + principal.getName());
+
+        model.addAttribute("modelDetails", modelService.modelDetails(modelName));
+
+        return "model-details";
     }
+
+    //Пока что не знаю нужно или нет
+//    @GetMapping("/{uuid}")
+//    String getModel (@PathVariable String uuid, Model model, Principal principal){
+//        LOG.log(Level.INFO, "Show model for " + principal.getName());
+//
+//        Optional<com.example.lab.carapplicationweb.models.Model> newModel = modelService.findByUuid(uuid);
+//        model.addAttribute("model", newModel.get());
+//
+//        return "modelPage";
+//    }
 
     @GetMapping("/add")
     String addModel(Model model, Principal principal)
     {
         LOG.log(Level.INFO, "Open add model page for " + principal.getName());
+
         model.addAttribute("brands", brandService.getAll());
+
         return "model-add";
     }
 
     @PostMapping("/add")
     String addModel(@Valid AddModelDto model, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+        LOG.log(Level.INFO, "Add model for " + principal.getName());
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("modelModel", model);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.modelModel",
                     bindingResult);
             return "redirect:/models/add";
         }
-        LOG.log(Level.INFO, "Add model for " + principal.getName());
+
         modelService.add(model);
-        return "redirect:/";
-    }
 
-    @GetMapping("/model-details/{model-name}")
-    public String modelDetails(@PathVariable("model-name") String modelName, org.springframework.ui.Model model, Principal principal) {
-        LOG.log(Level.INFO, "Show model details for " + principal.getName());
-        model.addAttribute("modelDetails", modelService.modelDetails(modelName));
-        return "model-details";
-    }
-
-    @GetMapping("/model-delete/{full-model-name}")
-    String deleteModel(@PathVariable("full-model-name") String fullName, Principal principal)
-    {
-        LOG.log(Level.INFO, "Delete model for " + principal.getName());
-        modelService.deleteByName(fullName);
         return "redirect:/models/all";
     }
 
@@ -100,13 +104,13 @@ public class ModelController {
         Optional<EditModelDto> editModel = modelService.findByName(modelName);
         model.addAttribute("updateModel", editModel.orElse(new EditModelDto()));
         model.addAttribute("brands", brandService.getAll());
+
         return "model-edit";
     }
 
     @PostMapping("/edit/{model-name}")
-    public String editBrand(@Valid @ModelAttribute("updateModel") EditModelDto editModel,
+    public String editModel(@Valid @ModelAttribute("updateModel") EditModelDto editModel,
                             BindingResult bindingResult, Model model) {
-//        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
         if (bindingResult.hasErrors()) {
             model.addAttribute("brands", brandService.getAll());
             return "model-edit";
@@ -114,6 +118,17 @@ public class ModelController {
 
         modelService.update(editModel);
 
-        return "redirect:/users/profile";
+        return "redirect:/models/all";
+    }
+
+    //DeleteByName может работать некорректно так как может быть две машины с разными брендами но одинаковым названием машины
+    @GetMapping("/model-delete/{full-model-name}")
+    String deleteModel(@PathVariable("full-model-name") String fullName, Principal principal)
+    {
+        LOG.log(Level.INFO, "Delete model for " + principal.getName());
+
+        modelService.deleteByName(fullName);
+
+        return "redirect:/models/all";
     }
 }

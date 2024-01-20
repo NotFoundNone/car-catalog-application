@@ -28,10 +28,6 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
     public void setAuthService(AuthService authService) {
         this.authService = authService;
     }
@@ -40,8 +36,6 @@ public class AuthController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
-
 
     @ModelAttribute("userRegistrationDto")
     public UserRegistrationDto initForm() {
@@ -58,20 +52,17 @@ public class AuthController {
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-//            System.out.println("Validation errors: " + bindingResult.getAllErrors());
             redirectAttributes.addFlashAttribute("userRegistration", userRegistration);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegistration", bindingResult);
-
             return "user-register";
         }
-
         try {
             this.authService.register(userRegistration);
         } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("userRegistration", userRegistration);
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/users/register";
         }
-
         return "redirect:/users/login";
     }
 

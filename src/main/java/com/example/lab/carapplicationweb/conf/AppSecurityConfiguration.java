@@ -28,9 +28,9 @@ public class AppSecurityConfiguration
         this.userRepository = userRepository;
     }
 
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+//    public void setUserRepository(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityContextRepository securityContextRepository) throws Exception {

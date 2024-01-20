@@ -54,25 +54,59 @@ public class OfferController {
     @GetMapping("/all")
     String getAll(Model model, Principal principal){
         LOG.log(Level.INFO, "Show all offers for " + principal.getName());
+
         List<ShowOfferInfoDto> offers = offerService.getAll();
         model.addAttribute("offerModels", offers);
+
         return "offers-all";
     }
 
-    @GetMapping("/{uuid}")
-    String getOffer (@PathVariable String uuid, Model model, Principal principal){
-        LOG.log(Level.INFO, "Get offer for " + principal.getName());
-        Optional<Offer> offer = offerService.findByUuid(uuid);
-        model.addAttribute("offer", offer.get());
-        return "offerPage";
+    @GetMapping("/user-offers")
+    String getUserOffers(Model model, Principal principal) {
+        LOG.log(Level.INFO, "Show user offers for " + principal.getName());
+
+        List<ShowOfferInfoDto> userOffers = offerService.getAllBySeller(principal.getName());
+        model.addAttribute("offerModels", userOffers);
+
+        return "user-offers";
     }
+
+    @GetMapping("/top3mostexpensive")
+    String getTop3MostExpensive(Model model, Principal principal) {
+        LOG.log(Level.INFO, "Show top 3 most expensive for " + principal.getName());
+
+        List<Offer> top3MostExpensiveOffers = offerService.getTop3MostExpensiveOffers();
+        model.addAttribute("top3Offers", top3MostExpensiveOffers);
+
+        return "top3offers";
+    }
+
+    @GetMapping("/offer-details/{offer-uuid}")
+    public String offerDetails(@PathVariable("offer-uuid") String offerUuid, org.springframework.ui.Model model, Principal principal) {
+        LOG.log(Level.INFO, "Show offer details for " + principal.getName());
+
+        model.addAttribute("offerDetails", offerService.offerDetails(offerUuid));
+
+        return "offer-details";
+    }
+
+    //Пока что не знаю нужно или нет
+//    @GetMapping("/{uuid}")
+//    String getOffer (@PathVariable String uuid, Model model, Principal principal){
+//        LOG.log(Level.INFO, "Get offer for " + principal.getName());
+//
+//        Optional<Offer> offer = offerService.findByUuid(uuid);
+//
+//        model.addAttribute("offer", offer.get());
+//        return "offerPage";
+//    }
 
     @GetMapping("/add")
     String addOffer(Model model, Principal principal)
     {
         LOG.log(Level.INFO, "Open add offer page for " + principal.getName());
+
         model.addAttribute("models", modelService.getAll());
-//        model.addAttribute("sellers", userService.getAll());
         if (userService.isUserAdmin(principal.getName())) {
             model.addAttribute("sellers", userService.getAll());
         }
@@ -81,50 +115,23 @@ public class OfferController {
             User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("sellers", currentUser);
         }
+
         return "offer-add";
     }
 
     @PostMapping("/add")
     String addOffer(@Valid AddOfferDto offer, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal){
+        LOG.log(Level.INFO, "Add offer for " + principal.getName());
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerModel", offer);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerModel",
                     bindingResult);
             return "redirect:/offers/add";
         }
-        LOG.log(Level.INFO, "Add offer for " + principal.getName());
+
         offerService.add(offer);
-        return "redirect:/";
-    }
 
-    @GetMapping("/offer-details/{offer-uuid}")
-    public String offerDetails(@PathVariable("offer-uuid") String offerUuid, org.springframework.ui.Model model, Principal principal) {
-        LOG.log(Level.INFO, "Show offer details for " + principal.getName());
-        model.addAttribute("offerDetails", offerService.offerDetails(offerUuid));
-        return "offer-details";
-    }
-
-    @GetMapping("/top3mostexpensive")
-    String getTop3MostExpensive(Model model, Principal principal) {
-        LOG.log(Level.INFO, "Show top 3 most expensive for " + principal.getName());
-        List<Offer> top3MostExpensiveOffers = offerService.getTop3MostExpensiveOffers();
-        model.addAttribute("top3Offers", top3MostExpensiveOffers);
-        return "top3offers";
-    }
-
-    @GetMapping("/user-offers")
-    String getUserOffers(Model model, Principal principal) {
-        LOG.log(Level.INFO, "Show user offers for " + principal.getName());
-        List<ShowOfferInfoDto> userOffers = offerService.getAllBySeller(principal.getName());
-        model.addAttribute("offerModels", userOffers);
-        return "user-offers";
-    }
-
-    @GetMapping("/offer-delete/{full-offer-name}")
-    String deleteOffer(@PathVariable("full-offer-name") String fullName, Principal principal)
-    {
-        LOG.log(Level.INFO, "Delete offer for " + principal.getName());
-        offerService.deleteByFullName(fullName);
         return "redirect:/offers/all";
     }
 
@@ -142,13 +149,13 @@ public class OfferController {
             User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("sellers", currentUser);
         }
+
         return "offer-edit";
     }
 
     @PostMapping("/edit/{uuid}")
-    public String editBrand(@Valid @ModelAttribute("updateOffer") EditOfferDto editOffer,
+    public String editOffer(@Valid @ModelAttribute("updateOffer") EditOfferDto editOffer,
                             BindingResult bindingResult, Model model, Principal principal) {
-//        logger.info("ControllerUpdating brand with UUID: {}", editBrand.getUuid());
         if (bindingResult.hasErrors()) {
             model.addAttribute("models", modelService.getAll());
             if (userService.isUserAdmin(principal.getName())) {
@@ -166,4 +173,15 @@ public class OfferController {
 
         return "redirect:/users/profile";
     }
+
+    @GetMapping("/offer-delete/{full-offer-name}")
+    String deleteOffer(@PathVariable("full-offer-name") String fullName, Principal principal)
+    {
+        LOG.log(Level.INFO, "Delete offer for " + principal.getName());
+
+        offerService.deleteByFullName(fullName);
+
+        return "redirect:/offers/all";
+    }
+
 }

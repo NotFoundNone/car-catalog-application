@@ -8,5 +8,5 @@ public enum Category {
 
     private int index;
 
-    Category(int index) {this.index = index; }
+    Category(int index) {this.index = index;}
 }

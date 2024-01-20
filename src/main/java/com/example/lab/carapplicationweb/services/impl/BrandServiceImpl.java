@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 //@EnableCaching
 public class BrandServiceImpl implements BrandService {
 
-    private static final Logger logger = LoggerFactory.getLogger(Brand.class);
     private BrandRepository brandRepository;
     private final ValidationUtil validationUtil;
     private ModelMapper modelMapper;
@@ -77,9 +76,7 @@ public class BrandServiceImpl implements BrandService {
                 Brand brand = existingBrand.get();
                 modelMapper.map(newBrandDTO, brand);
                 brandRepository.saveAndFlush(brand);
-                logger.info("Brand updated successfully.");
             } catch (Exception e) {
-                logger.error("Error updating brand.", e);
                 System.out.println("Oops, something went wrong! :(");
             }
         }
