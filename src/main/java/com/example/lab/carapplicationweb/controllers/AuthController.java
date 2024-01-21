@@ -25,16 +25,10 @@ import java.security.Principal;
 public class AuthController {
 
     private AuthService authService;
-    private UserService userService;
 
     @Autowired
     public void setAuthService(AuthService authService) {
         this.authService = authService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     @ModelAttribute("userRegistrationDto")
@@ -101,7 +95,7 @@ public class AuthController {
 
     @GetMapping("/profile/edit")
     public String showEditProfile(Model model, Principal principal) {
-        User editUser = userService.findByUsername(principal.getName());
+        User editUser = authService.findByUsername(principal.getName());
         model.addAttribute("user", editUser);
         return "editUser";
     }
@@ -113,7 +107,7 @@ public class AuthController {
             return "editUser";
         }
 
-        userService.update(editUser);
+        authService.update(editUser);
 
         return "redirect:/users/profile";
     }

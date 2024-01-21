@@ -24,7 +24,7 @@
                         <h4 th:text="'Mileage: ' + ${offerDetails.mileage}"></h4>
                         <h4 th:text="'Engine: ' + ${offerDetails.engine}"></h4>
                         <h4 th:text="'Discription: ' + ${offerDetails.discription}"></h4>
-                        <div th:if="${#authorization.expression('hasRole(''ADMIN'')') or offerDetails.sellerUsername eq #authentication.principal.username}" class="align-bottom">
+                        <div th:if="${offerDetails.sellerUsername eq #authentication.principal.username}" class="align-bottom">
                             <a class="btn btn-danger align-bottom" th:href="@{/offers/edit/{uuid}(uuid=${offerDetails.uuid})}">Update offer</a>
                         </div>
                         <br>

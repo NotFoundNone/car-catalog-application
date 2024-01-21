@@ -63,7 +63,7 @@ public class OfferServiceImpl implements OfferService {
 //                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
                 Offer offer = modelMapper.map(offerDTO, Offer.class);
                 offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
-                offer.setSeller(userRepository.findByUsername(offerDTO.getSellerUsername()).orElse(null));
+                offer.setSeller(userRepository.findUserByUsername(offerDTO.getSellerUsername()).orElse(null));
 //                offer.setSeller(currentUser);
                 this.offerRepository.saveAndFlush(offer);
             }
@@ -74,7 +74,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "brands", allEntries = true)
+    @CacheEvict(cacheNames = "offers", allEntries = true)
     public void update(EditOfferDto newOfferDTO) {
         if (!validationUtil.isValid(newOfferDTO)) {
             this.validationUtil
@@ -95,6 +95,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @Cacheable("offers")
     public ShowDetailedOfferInfoDto offerDetails(String offerUuid)
     {
         return modelMapper.map(offerRepository.findById(offerUuid).orElse(null), ShowDetailedOfferInfoDto.class);
@@ -127,7 +128,7 @@ public class OfferServiceImpl implements OfferService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        User seller = userRepository.findByUsername(sellerUsername)
+        User seller = userRepository.findUserByUsername(sellerUsername)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         List<Offer> offers = offerRepository.findAllBySeller(seller);
         return offers.stream()

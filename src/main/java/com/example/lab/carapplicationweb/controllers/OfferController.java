@@ -6,6 +6,7 @@ import com.example.lab.carapplicationweb.services.ModelService;
 import com.example.lab.carapplicationweb.services.OfferService;
 import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.*;
+import com.example.lab.carapplicationweb.services.impl.AuthService;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +29,7 @@ public class OfferController {
 
     private OfferService offerService;
     private ModelService modelService;
-    private UserService userService;
+    private AuthService authService;
 
     private static final Logger LOG = LogManager.getLogger(Controller.class);
 
@@ -39,7 +40,7 @@ public class OfferController {
     public void setModelService(ModelService modelService) { this.modelService = modelService; }
 
     @Autowired
-    public void setUserService(UserService userService) { this.userService = userService; }
+    public void setAuthService(AuthService authService) { this.authService = authService; }
 
     @ModelAttribute("offerModel")
     public AddOfferDto initOffer() {
@@ -107,12 +108,12 @@ public class OfferController {
         LOG.log(Level.INFO, "Open add offer page for " + principal.getName());
 
         model.addAttribute("models", modelService.getAll());
-        if (userService.isUserAdmin(principal.getName())) {
-            model.addAttribute("sellers", userService.getAll());
+        if (authService.isUserAdmin(principal.getName())) {
+            model.addAttribute("sellers", authService.getAll());
         }
         else
         {
-            User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+            User currentUser = authService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
             model.addAttribute("sellers", currentUser);
         }
 
@@ -141,31 +142,19 @@ public class OfferController {
 
         model.addAttribute("updateOffer", editOffer.orElse(new EditOfferDto()));
         model.addAttribute("models", modelService.getAll());
-        if (userService.isUserAdmin(principal.getName())) {
-            model.addAttribute("sellers", userService.getAll());
-        }
-        else
-        {
-            User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-            model.addAttribute("sellers", currentUser);
-        }
+        User currentUser = authService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("sellers", currentUser);
 
         return "offer-edit";
     }
 
     @PostMapping("/edit/{uuid}")
     public String editOffer(@Valid @ModelAttribute("updateOffer") EditOfferDto editOffer,
-                            BindingResult bindingResult, Model model, Principal principal) {
+                            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("models", modelService.getAll());
-            if (userService.isUserAdmin(principal.getName())) {
-                model.addAttribute("sellers", userService.getAll());
-            }
-            else
-            {
-                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-                model.addAttribute("sellers", currentUser);
-            }
+            User currentUser = authService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("sellers", currentUser);
             return "offer-edit";
         }
 
