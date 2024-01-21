@@ -17,7 +17,6 @@ public class ValidationUtilImpl implements ValidationUtil {
         this.validator = validator;
     }
 
-
     @Override
     public <E> boolean isValid(E object) {
         return this.validator.validate(object).size() == 0;
@@ -27,5 +26,6 @@ public class ValidationUtilImpl implements ValidationUtil {
     public <E> Set<ConstraintViolation<E>> violations(E object) {
         return this.validator.validate(object);
     }
+
 }
 

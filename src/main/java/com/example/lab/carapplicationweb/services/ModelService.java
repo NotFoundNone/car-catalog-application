@@ -8,21 +8,22 @@ import java.util.Optional;
 
 public interface ModelService {
 
-    void add(AddModelDto modelDTO);
-
-    void update(EditModelDto newModelDTO);
-
-    ShowDetailedModelInfoDto modelDetails(String modelName);
-
-    void deleteByUuid(String uuid);
-
-    void deleteByFullName(String fullName);
+    List<ShowModelInfoDto> getAll();
 
     Optional<Model> findByUuid(String uuid);
 
     Optional<EditModelDto> findByName(String modelName);
 
-    List<ShowModelInfoDto> getAll();
+    ShowDetailedModelInfoDto modelDetails(String modelName);
+
+    void add(AddModelDto modelDTO);
+
+    void update(EditModelDto newModelDTO);
+
+    void deleteByUuid(String uuid);
 
     void deleteByName(String modelName);
+
+    void deleteByFullName(String fullName);
+
 }

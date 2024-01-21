@@ -6,7 +6,6 @@ import com.example.lab.carapplicationweb.repositories.ModelRepository;
 import com.example.lab.carapplicationweb.repositories.OfferRepository;
 import com.example.lab.carapplicationweb.repositories.UserRepository;
 import com.example.lab.carapplicationweb.services.OfferService;
-import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.*;
 import com.example.lab.carapplicationweb.util.ValidationUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,10 +25,10 @@ import java.util.stream.Collectors;
 @Service
 @EnableCaching
 public class OfferServiceImpl implements OfferService {
+
     private OfferRepository offerRepository;
     private ModelRepository modelRepository;
     private UserRepository userRepository;
-    private UserService userService;
     private final ValidationUtil validationUtil;
     private final ModelMapper modelMapper;
 
@@ -49,6 +48,66 @@ public class OfferServiceImpl implements OfferService {
     public void setUserRepository (UserRepository userRepository) { this.userRepository = userRepository;}
 
     @Override
+    @Cacheable("offers")
+    public List<ShowOfferInfoDto> getAll() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return offerRepository.findAll().stream().map(offer -> modelMapper.map(offer, ShowOfferInfoDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Offer> findByUuid(String uuid) {
+        return offerRepository.findById(uuid);
+    }
+
+    //не знаю пока что как по другому, нужно пересмотреть позже
+    @Override
+    public Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid) {
+        return Optional.ofNullable(modelMapper.map(offerRepository.findByUuid(uuid), EditOfferDto.class));
+    }
+
+    @Override
+    @Cacheable("offers")
+    public ShowDetailedOfferInfoDto offerDetails(String offerUuid)
+    {
+        return modelMapper.map(offerRepository.findById(offerUuid).orElse(null), ShowDetailedOfferInfoDto.class);
+    }
+
+    @Override
+    public List<Offer> getTop3MostExpensiveOffers() {
+        List<Offer> allOffers = offerRepository.findAll();
+
+        List<Offer> top3MostExpensiveOffers = allOffers.stream()
+                .sorted(Comparator.comparingInt(Offer::getPrice).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+
+        return top3MostExpensiveOffers;
+    }
+
+    @Override
+    @Cacheable("offers")
+    public List<ShowOfferInfoDto> getAllBySeller(String sellerUsername) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        User seller = userRepository.findUserByUsername(sellerUsername)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        List<Offer> offers = offerRepository.findAllBySeller(seller);
+
+        return offers.stream()
+                .map(offer -> modelMapper.map(offer, ShowOfferInfoDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @CacheEvict(cacheNames = "offers", allEntries = true)
     public void add(AddOfferDto offerDTO) {
         if (!validationUtil.isValid(offerDTO))
@@ -60,11 +119,9 @@ public class OfferServiceImpl implements OfferService {
                     .forEach(System.out::println);
         } else {
             try {
-//                User currentUser = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
                 Offer offer = modelMapper.map(offerDTO, Offer.class);
                 offer.setModel(modelRepository.findByName(offerDTO.getModelName()).orElse(null));
                 offer.setSeller(userRepository.findUserByUsername(offerDTO.getSellerUsername()).orElse(null));
-//                offer.setSeller(currentUser);
                 this.offerRepository.saveAndFlush(offer);
             }
             catch (Exception e) {
@@ -95,13 +152,6 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    @Cacheable("offers")
-    public ShowDetailedOfferInfoDto offerDetails(String offerUuid)
-    {
-        return modelMapper.map(offerRepository.findById(offerUuid).orElse(null), ShowDetailedOfferInfoDto.class);
-    }
-
-    @Override
     @CacheEvict(cacheNames = "offers", allEntries = true)
     public void deleteByFullName(String fullName)
     {
@@ -109,59 +159,10 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<Offer> getTop3MostExpensiveOffers() {
-        List<Offer> allOffers = offerRepository.findAll();
-
-        List<Offer> top3MostExpensiveOffers = allOffers.stream()
-                .sorted(Comparator.comparingInt(Offer::getPrice).reversed())
-                .limit(3)
-                .collect(Collectors.toList());
-
-        return top3MostExpensiveOffers;
-    }
-
-    @Override
-    @Cacheable("offers")
-    public List<ShowOfferInfoDto> getAllBySeller(String sellerUsername) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        User seller = userRepository.findUserByUsername(sellerUsername)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        List<Offer> offers = offerRepository.findAllBySeller(seller);
-        return offers.stream()
-                .map(offer -> modelMapper.map(offer, ShowOfferInfoDto.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @CacheEvict(cacheNames = {"offers"},  allEntries = true)
+    @CacheEvict(cacheNames = "offers",  allEntries = true)
     public void deleteByUuid(String uuid) {
         offerRepository.deleteById(uuid);
     }
 
-    @Override
-    public Optional<Offer> findByUuid(String uuid) {
-        return offerRepository.findById(uuid);
-    }
 
-    @Override
-    public Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid) {
-        return Optional.ofNullable(modelMapper.map(offerRepository.findByUuid(uuid), EditOfferDto.class));
-    }
-
-
-    @Override
-    @Cacheable("offers")
-    public List<ShowOfferInfoDto> getAll() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return offerRepository.findAll().stream().map(offer -> modelMapper.map(offer, ShowOfferInfoDto.class))
-                .collect(Collectors.toList());
-    }
 }

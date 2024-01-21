@@ -1,6 +1,7 @@
 package com.example.lab.carapplicationweb.views;
 
 public class UserProfileView {
+
     private String username;
 
     private String firstName;
@@ -48,4 +49,5 @@ public class UserProfileView {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 }

@@ -15,6 +15,7 @@
                       th:method="post"
                       th:object="${userRegistrationDto}"
                       class="m-md-auto w-50 pb-3">
+
                     <div class="mb-3">
                         <label class="form-label" for="username">Username</label>
                         <input th:field="*{username}"
@@ -56,8 +57,6 @@
                             message</small>
                     </div>
 
-
-
                     <div class="mb-3">
                         <label class="form-label" for="password">Password</label>
                         <input th:field="*{password}"
@@ -69,7 +68,6 @@
                                class="text-danger">Error
                             message</small>
                     </div>
-
 
                     <div class="mb-3">
                         <label class="form-label" for="confirmPassword">Confirm password</label>

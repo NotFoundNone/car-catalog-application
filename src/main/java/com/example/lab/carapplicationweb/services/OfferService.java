@@ -9,23 +9,24 @@ import java.util.Optional;
 
 public interface OfferService {
 
-    void add(AddOfferDto offerDTO);
-
-    void update(EditOfferDto newOfferDTO);
-
-    ShowDetailedOfferInfoDto offerDetails(String offerUuid);
-
-    void deleteByFullName(String fullName);
-
-    List<Offer> getTop3MostExpensiveOffers();
-
-    void deleteByUuid(String uuid);
+    List<ShowOfferInfoDto> getAll();
 
     Optional<Offer> findByUuid(String uuid);
 
     Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid);
 
-    List<ShowOfferInfoDto> getAll();
+    ShowDetailedOfferInfoDto offerDetails(String offerUuid);
+
+    List<Offer> getTop3MostExpensiveOffers();
 
     public List<ShowOfferInfoDto> getAllBySeller(String username);
+
+    void add(AddOfferDto offerDTO);
+
+    void update(EditOfferDto newOfferDTO);
+
+    void deleteByFullName(String fullName);
+
+    void deleteByUuid(String uuid);
+
 }

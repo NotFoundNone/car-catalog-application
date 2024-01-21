@@ -23,6 +23,7 @@ public class SecondWebLabNewApplication {
 
         return modelMapper;
     }
+
     public static void main(String[] args) {
         SpringApplication.run(SecondWebLabNewApplication.class, args);
     }

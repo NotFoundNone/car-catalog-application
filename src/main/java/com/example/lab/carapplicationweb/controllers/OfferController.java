@@ -4,7 +4,7 @@ import com.example.lab.carapplicationweb.models.Offer;
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.services.ModelService;
 import com.example.lab.carapplicationweb.services.OfferService;
-import com.example.lab.carapplicationweb.services.UserService;
+//import com.example.lab.carapplicationweb.services.UserService;
 import com.example.lab.carapplicationweb.services.dtos.*;
 import com.example.lab.carapplicationweb.services.impl.AuthService;
 import jakarta.validation.Valid;
@@ -102,6 +102,7 @@ public class OfferController {
 //        return "offerPage";
 //    }
 
+    //Возможно стоит убрать возможность добавления админом офферов за других пользователей
     @GetMapping("/add")
     String addOffer(Model model, Principal principal)
     {

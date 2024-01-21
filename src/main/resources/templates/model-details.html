@@ -25,8 +25,9 @@
                                          th:href="@{/models/edit/{model-name}(model-name = ${modelDetails.name})}">Update brand</a>
             </div>
             <br>
-            <div sec:authorize="hasRole('ADMIN')" class="align-bottom"><a class="btn btn-danger align-bottom"
-                                         th:href="@{/models/model-delete/{full-model-name}(full-model-name=*{modelDetails.name})}">Delete model</a>
+            <div sec:authorize="hasRole('ADMIN')" class="align-bottom"><a class="btn btn-danger align-bottom" th:href="@{/models/model-delete/{full-model-name}(full-model-name=*{modelDetails.name})}">Delete model</a>
+<!--                                         th:href="@{/models/model-delete/{full-model-name}(full-model-name=*{modelDetails.brandName} + ' ' +  *{modelDetails.name} + ' ' +  *{modelDetails.startYear} + ' ' +  *{modelDetails.endYear})}">Delete model</a>-->
+
             </div>
           </div>
         </div>

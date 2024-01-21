@@ -1,8 +1,7 @@
 package com.example.lab.carapplicationweb.controllers;
 
 import com.example.lab.carapplicationweb.models.User;
-import com.example.lab.carapplicationweb.services.UserService;
-import com.example.lab.carapplicationweb.services.dtos.EditUser;
+import com.example.lab.carapplicationweb.services.dtos.EditUserDto;
 import com.example.lab.carapplicationweb.services.dtos.UserRegistrationDto;
 import com.example.lab.carapplicationweb.services.impl.AuthService;
 import com.example.lab.carapplicationweb.views.UserProfileView;
@@ -101,7 +100,7 @@ public class AuthController {
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile(@Valid @ModelAttribute("user") EditUser editUser,
+    public String editProfile(@Valid @ModelAttribute("user") EditUserDto editUser,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editUser";

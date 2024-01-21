@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class EditUser{
+public class EditUserDto {
     //    @UniqueUsername
     private String username;
 

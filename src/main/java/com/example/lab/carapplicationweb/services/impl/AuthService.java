@@ -4,7 +4,7 @@ import com.example.lab.carapplicationweb.enums.Role;
 import com.example.lab.carapplicationweb.models.User;
 import com.example.lab.carapplicationweb.repositories.UserRepository;
 import com.example.lab.carapplicationweb.repositories.UserRoleRepository;
-import com.example.lab.carapplicationweb.services.dtos.EditUser;
+import com.example.lab.carapplicationweb.services.dtos.EditUserDto;
 import com.example.lab.carapplicationweb.services.dtos.UserRegistrationDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -30,17 +30,17 @@ public class AuthService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public AuthService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
+    public AuthService(PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
 
+    @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Autowired
     public void setUserRoleRepository(UserRoleRepository userRoleRepository) {
         this.userRoleRepository = userRoleRepository;
     }
@@ -80,6 +80,7 @@ public class AuthService {
     public boolean isUserAdmin(String username) {
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
         return user.getRole().stream().anyMatch(role -> role.getRole() == Role.ADMIN);
     }
 
@@ -100,11 +101,12 @@ public class AuthService {
     }
 
     @CacheEvict(value = "users", allEntries = true)
-    public EditUser update(EditUser editUser) {
+    public EditUserDto update(EditUserDto editUser) {
         User user = findByUsername(editUser.getUsername());
         user.setFirstName(editUser.getFirstName());
         user.setLastName(editUser.getLastName());
-        return modelMapper.map(userRepository.save(user), EditUser.class);
+
+        return modelMapper.map(userRepository.save(user), EditUserDto.class);
     }
 
 }

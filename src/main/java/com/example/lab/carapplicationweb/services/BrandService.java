@@ -10,21 +10,20 @@ import java.util.Optional;
 
 public interface BrandService{
 
-    void add(AddBrandDto brandDTO);
-
-    void update(EditBrandDto newBrandDTO);
-
-    ShowDetailedBrandInfoDto brandDetails(String brandName);
-
-    void deleteByUuid(String uuid);
-
-//    Optional<Brand> findByUuid(String uuid);
+    List<ShowBrandInfoDto> getAll();
 
     Optional<EditBrandDto> findByUuid(String uuid);
 
     Optional<EditBrandDto> findByName(String brandName);
 
-    List<ShowBrandInfoDto> getAll();
+    ShowDetailedBrandInfoDto brandDetails(String brandName);
+
+    void add(AddBrandDto brandDTO);
+
+    void update(EditBrandDto newBrandDTO);
+
+    void deleteByUuid(String uuid);
 
     void deleteByName(String brandName);
+
 }

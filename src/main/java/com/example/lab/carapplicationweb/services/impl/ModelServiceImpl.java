@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @EnableCaching
 public class ModelServiceImpl implements ModelService {
+
     private ModelRepository modelRepository;
     private BrandRepository brandRepository;
     private final ValidationUtil validationUtil;
@@ -38,6 +39,33 @@ public class ModelServiceImpl implements ModelService {
 
     @Autowired
     public void setBrandRepository (BrandRepository brandRepository){ this.brandRepository = brandRepository; }
+
+    @Override
+    @Cacheable("models")
+    public List<ShowModelInfoDto> getAll() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return modelRepository.findAll().stream().map(model -> modelMapper.map(model, ShowModelInfoDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
+
+    @Override
+    public Optional<EditModelDto> findByName(String modelName)
+    {
+        return Optional.ofNullable(modelMapper.map(modelRepository.findByName(modelName), EditModelDto.class));
+    }
+
+    @Override
+    public ShowDetailedModelInfoDto modelDetails(String modelName)
+    {
+        return modelMapper.map(modelRepository.findByName(modelName).orElse(null), ShowDetailedModelInfoDto.class);
+    }
 
     @Override
     @CacheEvict(cacheNames = "models", allEntries = true)
@@ -62,7 +90,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(cacheNames =  {"models", "offers"}, allEntries = true)
     public void update(EditModelDto newModelDTO) {
         if (!this.validationUtil.isValid(newModelDTO))
         {
@@ -84,57 +112,21 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public ShowDetailedModelInfoDto modelDetails(String modelName)
-    {
-        return modelMapper.map(modelRepository.findByName(modelName).orElse(null), ShowDetailedModelInfoDto.class);
-    }
-
-    @Override
-//    @CacheEvict(cacheNames = "models", allEntries = true)
+    @CacheEvict(cacheNames = {"models", "offers"}, allEntries = true)
     public void deleteByUuid(String uuid) { modelRepository.deleteById(uuid); }
-
-    @Override
-//    @CacheEvict(cacheNames = "models", allEntries = true)
-    public void deleteByFullName(String fullName)
-    {
-        modelRepository.deleteModelByFullName(fullName);
-    }
-
-//    @Autowired
-//    private EntityManager entityManager;
-//
-//    @Transactional
-//    public void deleteByFullName(String fullName) {
-//        Model model = modelRepository.findByFullName(fullName).orElse(null);
-//        if (model != null) {
-//            entityManager.remove(model);
-//        }
-//    }
-
-    @Override
-    public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
-
-    @Override
-    public Optional<EditModelDto> findByName(String modelName)
-    {
-        return Optional.ofNullable(modelMapper.map(modelRepository.findByName(modelName), EditModelDto.class));
-    }
-
-    @Override
-    @Cacheable("models")
-    public List<ShowModelInfoDto> getAll() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return modelRepository.findAll().stream().map(model -> modelMapper.map(model, ShowModelInfoDto.class))
-                .collect(Collectors.toList());
-    }
 
     @Override
     @CacheEvict(cacheNames = {"models", "offers"},  allEntries = true)
     public void deleteByName(String modelName) {
         modelRepository.deleteByName(modelName);
     }
+
+    //Лучше удалять через этот метод, посмотреть позже
+    @Override
+    @CacheEvict(cacheNames = {"models", "offers"}, allEntries = true)
+    public void deleteByFullName(String fullName)
+    {
+        modelRepository.deleteModelByFullName(fullName);
+    }
+
 }
