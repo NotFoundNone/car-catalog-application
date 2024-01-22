@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/offers")
@@ -83,26 +84,13 @@ public class OfferController {
     }
 
     @GetMapping("/offer-details/{offer-uuid}")
-    public String offerDetails(@PathVariable("offer-uuid") String offerUuid, org.springframework.ui.Model model, Principal principal) {
+    public String offerDetails(@PathVariable("offer-uuid") UUID offerUuid, org.springframework.ui.Model model, Principal principal) {
         LOG.log(Level.INFO, "Show offer details for " + principal.getName());
 
         model.addAttribute("offerDetails", offerService.offerDetails(offerUuid));
 
         return "offer-details";
     }
-
-    //Пока что не знаю нужно или нет
-//    @GetMapping("/{uuid}")
-//    String getOffer (@PathVariable String uuid, Model model, Principal principal){
-//        LOG.log(Level.INFO, "Get offer for " + principal.getName());
-//
-//        Optional<Offer> offer = offerService.findByUuid(uuid);
-//
-//        model.addAttribute("offer", offer.get());
-//        return "offerPage";
-//    }
-
-    //Возможно стоит убрать возможность добавления админом офферов за других пользователей
     @GetMapping("/add")
     String addOffer(Model model, Principal principal)
     {
@@ -138,7 +126,7 @@ public class OfferController {
     }
 
     @GetMapping("/edit/{uuid}")
-    public String showEditOffer(@PathVariable("uuid") String uuid, Model model, Principal principal) {
+    public String showEditOffer(@PathVariable("uuid") UUID uuid, Model model, Principal principal) {
         Optional<EditOfferDto> editOffer = offerService.findEditOfferDtoByUuid(uuid);
 
         model.addAttribute("updateOffer", editOffer.orElse(new EditOfferDto()));

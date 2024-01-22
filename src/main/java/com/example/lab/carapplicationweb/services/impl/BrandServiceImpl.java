@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Optional<EditBrandDto> findByUuid(String uuid) {
+    public Optional<EditBrandDto> findByUuid(UUID uuid) {
         return Optional.ofNullable(modelMapper.map(brandRepository.findByUuid(uuid), EditBrandDto.class));
     }
 
@@ -115,7 +116,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @CacheEvict(cacheNames = {"brands", "models", "offers"}, allEntries = true)
-    public void deleteByUuid(String uuid) { brandRepository.deleteById(uuid);}
+    public void deleteByUuid(UUID uuid) { brandRepository.deleteById(uuid);}
 
     @Override
     @CacheEvict(cacheNames = {"brands", "models", "offers"},  allEntries = true)

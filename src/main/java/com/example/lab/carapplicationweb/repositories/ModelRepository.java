@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface ModelRepository extends JpaRepository<Model, String>
+public interface ModelRepository extends JpaRepository<Model, UUID>
 {
-    Optional<Model> findByUuid(String uuid);
+    Optional<Model> findByUuid(UUID uuid);
 
     Optional<Model> findByName(String name);
 

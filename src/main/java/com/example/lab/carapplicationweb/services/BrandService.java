@@ -7,12 +7,13 @@ import com.example.lab.carapplicationweb.services.dtos.EditBrandDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface BrandService{
 
     List<ShowBrandInfoDto> getAll();
 
-    Optional<EditBrandDto> findByUuid(String uuid);
+    Optional<EditBrandDto> findByUuid(UUID uuid);
 
     Optional<EditBrandDto> findByName(String brandName);
 
@@ -22,7 +23,7 @@ public interface BrandService{
 
     void update(EditBrandDto newBrandDTO);
 
-    void deleteByUuid(String uuid);
+    void deleteByUuid(UUID uuid);
 
     void deleteByName(String brandName);
 

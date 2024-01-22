@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,7 +54,7 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public Optional<Model> findByUuid(String uuid){ return modelRepository.findById(uuid); }
+    public Optional<Model> findByUuid(UUID uuid){ return modelRepository.findById(uuid); }
 
     @Override
     public Optional<EditModelDto> findByName(String modelName)
@@ -113,7 +114,7 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     @CacheEvict(cacheNames = {"models", "offers"}, allEntries = true)
-    public void deleteByUuid(String uuid) { modelRepository.deleteById(uuid); }
+    public void deleteByUuid(UUID uuid) { modelRepository.deleteById(uuid); }
 
     @Override
     @CacheEvict(cacheNames = {"models", "offers"},  allEntries = true)

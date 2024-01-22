@@ -2,13 +2,13 @@ package com.example.lab.carapplicationweb.services.dtos;
 
 import com.example.lab.carapplicationweb.enums.Engine;
 
+import java.util.UUID;
+
 public class ShowOfferInfoDto {
 
-    private String uuid;
+    private UUID uuid;
 
     private String modelName;
-
-//    private String brandName;
 
     private Engine engine;
 
@@ -20,11 +20,11 @@ public class ShowOfferInfoDto {
 
     private String sellerUsername;
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -35,10 +35,6 @@ public class ShowOfferInfoDto {
     public void setModelName(String modelName) {
         this.modelName = modelName;
     }
-
-//    public String getBrandName() { return brandName; }
-//
-//    public void setBrandName(String brandName) { this.brandName = brandName; }
 
     public Engine getEngine() {
         return engine;

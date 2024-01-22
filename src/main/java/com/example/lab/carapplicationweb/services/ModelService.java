@@ -5,12 +5,13 @@ import com.example.lab.carapplicationweb.services.dtos.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ModelService {
 
     List<ShowModelInfoDto> getAll();
 
-    Optional<Model> findByUuid(String uuid);
+    Optional<Model> findByUuid(UUID uuid);
 
     Optional<EditModelDto> findByName(String modelName);
 
@@ -20,7 +21,7 @@ public interface ModelService {
 
     void update(EditModelDto newModelDTO);
 
-    void deleteByUuid(String uuid);
+    void deleteByUuid(UUID uuid);
 
     void deleteByName(String modelName);
 

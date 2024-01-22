@@ -3,9 +3,11 @@ package com.example.lab.carapplicationweb.services.dtos;
 import com.example.lab.carapplicationweb.enums.Engine;
 import com.example.lab.carapplicationweb.enums.Transmission;
 
+import java.util.UUID;
+
 public class ShowDetailedOfferInfoDto {
 
-    private String uuid;
+    private UUID uuid;
 
     private String discription;
 
@@ -25,11 +27,11 @@ public class ShowDetailedOfferInfoDto {
 
     private String sellerUsername;
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

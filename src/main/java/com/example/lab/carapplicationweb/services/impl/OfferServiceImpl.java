@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,19 +61,19 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Optional<Offer> findByUuid(String uuid) {
+    public Optional<Offer> findByUuid(UUID uuid) {
         return offerRepository.findById(uuid);
     }
 
     //не знаю пока что как по другому, нужно пересмотреть позже
     @Override
-    public Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid) {
+    public Optional<EditOfferDto> findEditOfferDtoByUuid(UUID uuid) {
         return Optional.ofNullable(modelMapper.map(offerRepository.findByUuid(uuid), EditOfferDto.class));
     }
 
     @Override
     @Cacheable("offers")
-    public ShowDetailedOfferInfoDto offerDetails(String offerUuid)
+    public ShowDetailedOfferInfoDto offerDetails(UUID offerUuid)
     {
         return modelMapper.map(offerRepository.findById(offerUuid).orElse(null), ShowDetailedOfferInfoDto.class);
     }
@@ -160,7 +161,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @CacheEvict(cacheNames = "offers",  allEntries = true)
-    public void deleteByUuid(String uuid) {
+    public void deleteByUuid(UUID uuid) {
         offerRepository.deleteById(uuid);
     }
 

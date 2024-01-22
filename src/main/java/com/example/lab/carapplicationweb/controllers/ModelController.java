@@ -62,17 +62,6 @@ public class ModelController {
         return "model-details";
     }
 
-    //Пока что не знаю нужно или нет
-//    @GetMapping("/{uuid}")
-//    String getModel (@PathVariable String uuid, Model model, Principal principal){
-//        LOG.log(Level.INFO, "Show model for " + principal.getName());
-//
-//        Optional<com.example.lab.carapplicationweb.models.Model> newModel = modelService.findByUuid(uuid);
-//        model.addAttribute("model", newModel.get());
-//
-//        return "modelPage";
-//    }
-
     @GetMapping("/add")
     String addModel(Model model, Principal principal)
     {
@@ -121,7 +110,6 @@ public class ModelController {
         return "redirect:/models/all";
     }
 
-    //DeleteByName может работать некорректно так как может быть две машины с разными брендами но одинаковым названием машины
     @GetMapping("/model-delete/{full-model-name}")
     String deleteModel(@PathVariable("full-model-name") String fullName, Principal principal)
     {

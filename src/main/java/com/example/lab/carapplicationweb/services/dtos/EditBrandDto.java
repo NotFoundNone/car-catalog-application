@@ -3,18 +3,20 @@ package com.example.lab.carapplicationweb.services.dtos;
 import com.example.lab.carapplicationweb.util.UniqueBrandName;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.util.UUID;
+
 public class EditBrandDto {
 
-    private String uuid;
+    private UUID uuid;
 
     @UniqueBrandName
     String name;
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 

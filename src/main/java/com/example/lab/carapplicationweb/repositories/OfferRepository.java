@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface OfferRepository extends JpaRepository <Offer, String> {
+public interface OfferRepository extends JpaRepository <Offer, UUID> {
 
-    Optional<Offer> findByUuid(String uuid);
+    Optional<Offer> findByUuid(UUID uuid);
 
     List<Offer> findAllBySeller(User seller);
 

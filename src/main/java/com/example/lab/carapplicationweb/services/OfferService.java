@@ -6,16 +6,17 @@ import com.example.lab.carapplicationweb.services.dtos.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface OfferService {
 
     List<ShowOfferInfoDto> getAll();
 
-    Optional<Offer> findByUuid(String uuid);
+    Optional<Offer> findByUuid(UUID uuid);
 
-    Optional<EditOfferDto> findEditOfferDtoByUuid(String uuid);
+    Optional<EditOfferDto> findEditOfferDtoByUuid(UUID uuid);
 
-    ShowDetailedOfferInfoDto offerDetails(String offerUuid);
+    ShowDetailedOfferInfoDto offerDetails(UUID offerUuid);
 
     List<Offer> getTop3MostExpensiveOffers();
 
@@ -27,6 +28,6 @@ public interface OfferService {
 
     void deleteByFullName(String fullName);
 
-    void deleteByUuid(String uuid);
+    void deleteByUuid(UUID uuid);
 
 }

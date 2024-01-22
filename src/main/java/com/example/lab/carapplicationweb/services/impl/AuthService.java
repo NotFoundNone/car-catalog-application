@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -92,11 +93,11 @@ public class AuthService {
         return this.userRepository.findUserByUsername(userName).orElse(null);
     }
 
-    public void deleteByUuid(String uuid) {
+    public void deleteByUuid(UUID uuid) {
         userRepository.deleteById(uuid);
     }
 
-    public Optional<User> findByUuid(String uuid) {
+    public Optional<User> findByUuid(UUID uuid) {
         return userRepository.findById(uuid);
     }
 

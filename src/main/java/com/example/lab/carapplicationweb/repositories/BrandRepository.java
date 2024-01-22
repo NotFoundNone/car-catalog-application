@@ -7,11 +7,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface BrandRepository extends JpaRepository <Brand, String> {
+public interface BrandRepository extends JpaRepository <Brand, UUID> {
 
-    Optional<Brand> findByUuid(String uuid);
+    Optional<Brand> findByUuid(UUID uuid);
 
     Optional<Brand> findByName(String name);
 
