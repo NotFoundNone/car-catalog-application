@@ -1,13 +1,14 @@
 # Car Catalog
-Данное приложение предназначено для управления каталогом автомобилей, а так же для создания объявлений для продажи автомобилей. 
+
+This application is designed to manage the catalog of automobiles and create advertisements for their sale. Users are provided with a convenient interface for adding new entries about brands, models, and sales offers.
 
 ## Содержание
-- [Технологии](#технологии)
-- [Начало работы](#начало-работы)
-- [Требования](#требования)
+- [Technologies](#technologies)
+- [Getting Started](#начало-работы)
+- [Requirements](#требования)
 - [To do](#to-do)
-- [Команда проекта](#команда-проекта)
-- [Источники](#источники)
+- [Project Team](#команда-проекта)
+- [Sources](#источники)
 
 ## Технологии
 - [Java](https://docs.oracle.com/en/java/)
@@ -15,21 +16,28 @@
 - [PostgreSQL](https://www.postgresql.org)
 - [Redis](https://redis.io)
 
-## Начало работы
+## Getting Started
 
-### Требования
-Для установки и запуска проекта, необходим [Java]([https://nodejs.org/](https://docs.oracle.com/en/java/)) 19.
+### Requirements
+[Java]((https://docs.oracle.com/en/java/)) 19 is required to install and run the project.
 
-### Зачем вы разработали этот проект?
-Чтобы был.
+### Why was this project developed?
+Originally, the application was developed as part of a university coursework. Currently, it serves as my pet project where I implement new technologies that I have learned.
 
 ## To do
-- [x] Добавить крутое README
-- [ ] Всё переписать
-- [ ] ...
+- [ ] Change the application interface
+- [ ] Implement the ability to add photos to offers
+- [ ] Provide more detailed user information
+- [ ] Create a user-friendly details page for offers
 
-## Команда проекта
+## Project Team
 
-- [Дема Никита](tg://resolve?domain=bzvyagintsev) — Back-end Developer
+- [Nikita Dema](https://t.me/nnotfoundnone) — Back-end Developer
 
-## Источники
+## Sources
+
+- Lectures from our university professors)
+- "Spring in Action" by Craig Walls
+
+
+
