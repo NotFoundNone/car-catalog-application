@@ -2,7 +2,7 @@
 
 This application is designed to manage the catalog of automobiles and create advertisements for their sale. Users are provided with a convenient interface for adding new entries about brands, models, and sales offers.
 
-## Содержание
+## Сontent
 - [Technologies](#technologies)
 - [Getting Started](#начало-работы)
 - [Requirements](#требования)
@@ -10,7 +10,7 @@ This application is designed to manage the catalog of automobiles and create adv
 - [Project Team](#команда-проекта)
 - [Sources](#источники)
 
-## Технологии
+## Technologies
 - [Java](https://docs.oracle.com/en/java/)
 - [Spring](https://spring.io)
 - [PostgreSQL](https://www.postgresql.org)
