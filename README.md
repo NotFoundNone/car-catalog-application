@@ -14,7 +14,6 @@
 - [Spring](https://spring.io)
 - [PostgreSQL](https://www.postgresql.org)
 - [Redis](https://redis.io)
-- 
 
 ## Начало работы
 
